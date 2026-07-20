@@ -1,1 +1,1 @@
-# scrum-master-agent
+# Scrum Master Agent
