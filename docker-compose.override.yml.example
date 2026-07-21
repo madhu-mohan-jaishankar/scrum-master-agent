@@ -1,0 +1,39 @@
+# Local dev override — Redis Stack (community image, not for production).
+# Copy to docker-compose.override.yml to activate.
+#
+# Production uses Redis Enterprise operator or a managed Redis instance.
+
+services:
+  redis:
+    image: redis/redis-stack-server:latest
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    profiles: []
+
+  ingestion:
+    depends_on:
+      redis:
+        condition: service_healthy
+    profiles: []
+
+  worker:
+    depends_on:
+      redis:
+        condition: service_healthy
+    profiles: []
+
+  scheduler:
+    depends_on:
+      redis:
+        condition: service_healthy
+    profiles: []
+
+volumes:
+  redis_data:

@@ -1,0 +1,25 @@
+[
+  {
+    "sprint_id": "SPRINT-42",
+    "sprint_name": "Sprint 42 — Demo Sprint",
+    "sprint_day": 3,
+    "sprint_total_days": 8,
+    "total_points": 40.0,
+    "committed_points": 40.0,
+    "completed_points": 14.0,
+    "in_progress_points": 12.0,
+    "wip_count": 4,
+    "scope_creep_points": 2.0,
+    "projected_completion": "on track (Day 7)",
+    "blockers": [
+      "PR #101 blocked: iOS layout concern (bob → alice)",
+      "CI failing on demo-org/api-service (unit-tests)"
+    ],
+    "stale_prs": [
+      "PR #88 demo-org/ml-pipeline — approved 3 days ago, not merged"
+    ],
+    "ci_failures": [
+      "demo-org/api-service / unit-tests — failed 2025-07-14T11:00Z"
+    ]
+  }
+]

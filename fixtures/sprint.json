@@ -1,0 +1,22 @@
+{
+  "sprint": {
+    "id": "SPRINT-42",
+    "name": "Sprint 42 — Demo Sprint",
+    "start_date": "2025-07-14",
+    "end_date": "2025-07-25",
+    "total_points": 40.0,
+    "committed_points": 40.0
+  },
+  "team_members": [
+    { "username": "alice",   "display_name": "Alice Chen",    "wip_limit": 3 },
+    { "username": "bob",     "display_name": "Bob Nguyen",    "wip_limit": 3 },
+    { "username": "carol",   "display_name": "Carol Smith",   "wip_limit": 3 },
+    { "username": "dave",    "display_name": "Dave Okafor",   "wip_limit": 3 },
+    { "username": "eve",     "display_name": "Eve Martinez",  "wip_limit": 3 }
+  ],
+  "repositories": [
+    { "full_name": "demo-org/frontend-web",  "primary_owner": "alice" },
+    { "full_name": "demo-org/api-service",   "primary_owner": "bob" },
+    { "full_name": "demo-org/ml-pipeline",  "primary_owner": "carol" }
+  ]
+}

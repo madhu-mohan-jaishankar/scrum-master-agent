@@ -1,0 +1,63 @@
+services:
+  # ── Infrastructure ──────────────────────────────────────────────────────────
+  # Redis Stack provides: Redis Streams (event bus) + RediSearch/vector (store)
+  # Production: use the Redis Enterprise operator on OpenShift.
+  redis:
+    image: redis/redis-stack-server:latest
+    # NOTE: For production use the Red Hat certified Redis operator.
+    # This image is used here for local development only (see override file).
+    profiles: ["dev"]
+
+  redis-prod:
+    # Placeholder for production Redis Enterprise / operator deployment.
+    # Replace with your operator-managed Redis instance URL via REDIS_URL env var.
+    image: redis/redis-stack-server:latest
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles: ["prod"]
+
+  # ── Application Services ────────────────────────────────────────────────────
+  ingestion:
+    build:
+      context: .
+      dockerfile: services/ingestion/Dockerfile
+    env_file: .env
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      redis-prod:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles: ["prod"]
+
+  worker:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    env_file: .env
+    depends_on:
+      redis-prod:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles: ["prod"]
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: services/scheduler/Dockerfile
+    env_file: .env
+    depends_on:
+      redis-prod:
+        condition: service_healthy
+    restart: unless-stopped
+    profiles: ["prod"]
+
+volumes:
+  redis_data:

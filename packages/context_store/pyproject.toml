@@ -1,0 +1,24 @@
+[project]
+name = "scrumagent-context-store"
+version = "0.1.0"
+description = "Sprint Context Store — Redis JSON + RedisVL vector index"
+requires-python = ">=3.11"
+dependencies = [
+    "redis[hiredis]>=5.0",
+    "redisvl>=0.3",
+    "pydantic>=2.7",
+    "scrumagent-shared",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2",
+    "pytest-asyncio>=0.23",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["scrumagent_context_store"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

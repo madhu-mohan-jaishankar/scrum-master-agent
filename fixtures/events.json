@@ -1,0 +1,80 @@
+[
+  {
+    "source": "github",
+    "type": "pr.opened",
+    "actor": "alice",
+    "repo": "demo-org/frontend-web",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T09:15:00Z",
+    "payload": {
+      "action": "opened",
+      "repository": { "full_name": "demo-org/frontend-web" },
+      "sender": { "login": "alice" },
+      "pull_request": { "number": 101, "title": "feat: add dark mode toggle" }
+    }
+  },
+  {
+    "source": "github",
+    "type": "pr.comment",
+    "actor": "bob",
+    "repo": "demo-org/frontend-web",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T10:30:00Z",
+    "payload": {
+      "action": "created",
+      "repository": { "full_name": "demo-org/frontend-web" },
+      "sender": { "login": "bob" },
+      "pull_request": { "number": 101 },
+      "comment": { "body": "This CSS change will break the mobile layout on iOS — needs fixing before merge." }
+    }
+  },
+  {
+    "source": "ci",
+    "type": "ci.failed",
+    "actor": "github-actions[bot]",
+    "repo": "demo-org/api-service",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T11:00:00Z",
+    "payload": {
+      "workflow_run": { "name": "unit-tests", "conclusion": "failure", "id": 9001 }
+    }
+  },
+  {
+    "source": "jira",
+    "type": "ticket.updated",
+    "actor": "carol",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T14:00:00Z",
+    "payload": {
+      "webhookEvent": "jira:issue_updated",
+      "issue": {
+        "key": "SCRUM-101",
+        "fields": {
+          "summary": "Implement embedding pipeline",
+          "status": { "name": "In Progress" },
+          "story_points": 5,
+          "assignee": { "displayName": "Carol Smith" }
+        }
+      },
+      "user": { "displayName": "Carol Smith" }
+    }
+  },
+  {
+    "source": "github",
+    "type": "pr.stale",
+    "actor": "dave",
+    "repo": "demo-org/ml-pipeline",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-16T09:00:00Z",
+    "payload": {
+      "pull_request": {
+        "number": 88,
+        "title": "refactor: clean up batch job runner",
+        "created_at": "2025-07-13T10:00:00Z",
+        "days_open": 3,
+        "approved": true,
+        "ci_status": "passed"
+      }
+    }
+  }
+]

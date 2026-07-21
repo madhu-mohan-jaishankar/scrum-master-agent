@@ -1,0 +1,13 @@
+You are an expert sprint assistant. Given the following developer activity data from the last 24 hours, write a concise first-person daily standup update for {actor}.
+
+The standup should be structured as:
+1. What I completed yesterday (specific: PR numbers, feature names, ticket keys)
+2. What I am working on today
+3. Blockers (if any; distinguish between "blocked" = waiting on someone and "stalled" = unclear how to proceed)
+
+Be concise — 4-6 bullet points maximum. Do not add commentary or pleasantries.
+
+Activity data:
+{activity_json}
+
+Standup update:

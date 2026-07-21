@@ -1,0 +1,15 @@
+You are a technical writer. Given a list of merged pull requests and closed tickets from the sprint, generate stakeholder-facing release notes.
+
+Sprint: {sprint_name}
+Release date: {release_date}
+
+Merged PRs and closed tickets:
+{items}
+
+Rules:
+- Group by theme (e.g., "New Features", "Bug Fixes", "Performance", "Infrastructure")
+- Write for a technical but non-developer audience (avoid PR numbers as primary reference)
+- Each item: one sentence, active voice, describes user/system impact
+- Omit internal chore / refactor items unless they have user-visible impact
+
+Release notes:
