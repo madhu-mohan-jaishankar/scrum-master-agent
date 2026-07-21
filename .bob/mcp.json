@@ -3,7 +3,7 @@
     "scrumagent": {
       "command": "uv",
       "args": ["run", "python", "mcp_server.py"],
-      "cwd": "/home/ayden/gh/scrumagent"
+      "cwd": "${workspaceFolder}"
     }
   }
 }
