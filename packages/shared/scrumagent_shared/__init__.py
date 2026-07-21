@@ -1,4 +1,4 @@
-"""scrumagent_shared — canonical types, schemas, and adapters."""
+"""scrumagent_shared — canonical event types and schema."""
 
 from scrumagent_shared.events import AgentEvent, EventSource, EventType
 

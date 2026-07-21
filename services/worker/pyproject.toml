@@ -1,23 +1,15 @@
 [project]
 name = "scrumagent-worker"
 version = "0.1.0"
-description = "Redis Streams consumer — processes events through the processor pipeline"
+description = "Processing pipeline — runs event processors in sequence"
 requires-python = ">=3.11"
 dependencies = [
-    "redis[hiredis]>=5.0",
     "pydantic>=2.7",
-    "pydantic-settings>=2.3",
     "scrumagent-shared",
     "scrumagent-processors",
     "scrumagent-watsonx-client",
     "scrumagent-context-store",
     "scrumagent-dispatcher",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.2",
-    "pytest-asyncio>=0.23",
 ]
 
 [tool.hatch.build.targets.wheel]

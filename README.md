@@ -1,65 +1,79 @@
 # WatsonX ScrumMaster Agent PoC
 
-This repository is a Proof of Concept for a Scrum intelligence pipeline.
-The primary demo entrypoint is [`scripts/run_mock.py`](scripts/run_mock.py), which runs the real processing flow against fixture data without Redis, Slack, Jira, or WatsonX credentials.
+Proof of Concept for an AI-powered Scrum intelligence pipeline.
+Run the demo in seconds — no Redis, no WatsonX API key, no Slack token needed.
 
-## What the demo shows
-
-- GitHub-style events normalised into [`AgentEvent`](packages/shared/scrumagent_shared/events.py:62)
-- A real processor pipeline in [`ProcessingPipeline`](services/worker/worker/pipeline.py:21)
-- Mocked WatsonX and context storage implementations for deterministic demo output
-- Console-dispatched standup and alert output via [`ConsoleSink`](packages/dispatcher/scrumagent_dispatcher/sinks/console.py:45)
-
-## Quick start
-
-### Prerequisites
-
-- Python 3.11+
-- [uv](https://docs.astral.sh/uv/)
-
-### Install dependencies
+## Demo
 
 ```bash
-make install
+make install   # one-time setup
+make mock      # run the full 4-phase demo
 ```
 
-### Run the demo
+The demo replays a fictional sprint through the real event-processing pipeline
+and prints formatted standup digests, CI alerts, and a retro brief to the console.
+
+## What it shows
+
+| Phase | What happens |
+|---|---|
+| 1 — Fixture events | GitHub PR comments and CI failures are classified by [`MockWatsonxClient`](packages/watsonx_client/scrumagent_watsonx/mock_client.py) and dispatched as alerts |
+| 2 — Pre-standup brief | A scheduled trigger synthesises a sprint health brief from the in-memory store |
+| 3 — Standup digests | Per-member activity summaries are formatted and "posted to Slack" (console) |
+| 4 — Retro trigger | Survey responses drive a retrospective draft |
+
+## How it works
+
+```
+fixtures/events.json
+        │
+        ▼
+  ProcessingPipeline         services/worker/worker/pipeline.py
+    ├── PRClassifierProcessor     — classifies review comments (blocking/nit/…)
+    ├── CommitAnalyserProcessor   — labels commits (feature/bugfix/…)
+    ├── CIMonitorProcessor        — detects CI failures and flaky pipelines
+    ├── TicketTrackerProcessor    — tracks ticket lifecycle / scope creep
+    └── ActivityAggregatorProcessor — aggregates per-actor activity
+        │
+        ▼
+  ActionDispatcher → ConsoleSink (mock) / SlackSink / JiraSink
+```
+
+AI calls use [`MockWatsonxClient`](packages/watsonx_client/scrumagent_watsonx/mock_client.py) (keyword-matching, deterministic).
+Replace with [`WatsonxClient`](packages/watsonx_client/scrumagent_watsonx/protocol.py) (real `ibm-watsonx-ai`) when credentials are available.
+
+## Repository layout
+
+```
+scripts/run_mock.py          ← demo entrypoint
+fixtures/                    ← sample sprint, events, standup digests, retro survey
+prompts/                     ← LLM prompt templates (used by real WatsonxClient)
+
+packages/
+  shared/                    ← AgentEvent schema (single source of truth)
+  watsonx_client/            ← WatsonxClientProtocol + MockWatsonxClient
+  context_store/             ← SprintContextStoreProtocol + MockSprintContextStore
+  processors/                ← 5 stateless event processors
+  dispatcher/                ← ActionDispatcher + ConsoleSink (+ Slack/Jira stubs)
+
+services/worker/worker/
+  pipeline.py                ← ProcessingPipeline (used directly by the demo)
+```
+## Checks
 
 ```bash
-make mock
+make lint      # ruff
+make typecheck # mypy strict
 ```
 
-### Run checks
 
-```bash
-make test
-```
+## Wiring real integrations
 
-## Optional infrastructure mode
+All processors accept interfaces (`WatsonxClientProtocol`, `SprintContextStoreProtocol`).
+To go live, swap the mock implementations:
 
-The repository still includes Redis-backed services for a fuller demo:
+1. Copy `.env.example` → `.env` and fill in credentials
+2. In `scripts/run_mock.py`, replace `MockWatsonxClient()` with `WatsonxClient()`
+3. For Slack/Jira output, pass `SlackSink()` / `JiraSink()` to `ActionDispatcher(mock=False, ...)`
 
-```bash
-cp docker-compose.override.yml.example docker-compose.override.yml
-make up
-make run-ingestion
-make run-worker
-make run-scheduler
-```
-
-These services bind only to `127.0.0.1` and use environment variables from [`.env.example`](.env.example).
-
-## Project layout
-
-- [`scripts/run_mock.py`](scripts/run_mock.py) — single-command PoC demo runner
-- [`fixtures/`](fixtures/) — sample sprint and event data used by the demo
-- [`packages/processors/`](packages/processors/) — core event processors
-- [`services/worker/`](services/worker/) — processing pipeline and Redis consumer
-- [`services/ingestion/`](services/ingestion/) — webhook receiver for GitHub events
-- [`services/scheduler/`](services/scheduler/) — scheduled trigger emitter
-
-## Notes
-
-- Prompt templates live in [`prompts/`](prompts/)
-- The technical proposal remains in [`watsonx-scrummaster-agent-technical-proposal.html`](watsonx-scrummaster-agent-technical-proposal.html)
-- Secrets are environment-driven only; do not commit a `.env` file
+The [technical proposal](watsonx-scrummaster-agent-technical-proposal.html) covers the full production architecture.

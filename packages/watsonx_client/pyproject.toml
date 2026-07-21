@@ -1,18 +1,11 @@
 [project]
 name = "scrumagent-watsonx-client"
 version = "0.1.0"
-description = "WatsonX AI inference client (classify + generate)"
+description = "WatsonX AI inference client (mock + protocol for PoC)"
 requires-python = ">=3.11"
 dependencies = [
-    "ibm-watsonx-ai>=1.1",
     "pydantic>=2.7",
     "scrumagent-shared",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.2",
-    "pytest-asyncio>=0.23",
 ]
 
 [tool.hatch.build.targets.wheel]

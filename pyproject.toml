@@ -5,9 +5,7 @@ members = [
     "packages/watsonx_client",
     "packages/context_store",
     "packages/dispatcher",
-    "services/ingestion",
     "services/worker",
-    "services/scheduler",
 ]
 
 [tool.uv.sources]
@@ -29,43 +27,11 @@ python_version = "3.12"
 strict = true
 ignore_missing_imports = true
 explicit_package_bases = true
-exclude = ["^\\.venv/", "conftest\\.py$", "^services/[^/]+/main\\.py$", "/tests/"]
 mypy_path = [
     "packages/shared",
     "packages/watsonx_client",
     "packages/context_store",
     "packages/processors",
     "packages/dispatcher",
-    "services/ingestion",
     "services/worker",
-    "services/scheduler",
-]
-
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-addopts = "--import-mode=importlib"
-testpaths = [
-    "packages",
-    "services",
-]
-# Ensure each package's source root is on sys.path so test modules resolve.
-pythonpath = [
-    "packages/shared",
-    "packages/watsonx_client",
-    "packages/context_store",
-    "packages/processors",
-    "packages/dispatcher",
-    "services/ingestion",
-    "services/worker",
-    "services/scheduler",
-    "scripts",
-]
-
-[dependency-groups]
-dev = [
-    "aiohttp>=3.14.2",
-    "mypy>=2.3.0",
-    "pytest>=9.1.1",
-    "pytest-asyncio>=1.4.0",
-    "ruff>=0.15.22",
 ]

@@ -1,19 +1,11 @@
 [project]
 name = "scrumagent-dispatcher"
 version = "0.1.0"
-description = "Action Dispatcher — Slack, Jira, Email, Dashboard outputs"
+description = "Action Dispatcher — console output for PoC; Slack/Jira stubs for real integrations"
 requires-python = ">=3.11"
 dependencies = [
-    "slack-sdk>=3.29",
-    "httpx>=0.27",
     "pydantic>=2.7",
     "scrumagent-shared",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.2",
-    "pytest-asyncio>=0.23",
 ]
 
 [tool.hatch.build.targets.wheel]
