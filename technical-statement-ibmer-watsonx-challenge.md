@@ -1,10 +1,5 @@
 # Technical Statement — IBMer watsonx Challenge 2026
 
-**Project:** WatsonX ScrumMaster Agent  
-**Team:** Cormac, Mebin, Richard, Claudia, Adeolu, Crown, Ayden, Yosief
-
----
-
 ## How the Solution Works
 
 The WatsonX ScrumMaster Agent is an AI-powered agent that treats the sprint board as a source of truth and continuously reconciles it against what is actually happening across GitHub, CI pipelines, Jira, and team communication channels. It surfaces that intelligence proactively: a per-person standup digest — derived from commits, PR activity, and ticket updates — arrives 15 minutes before the daily meeting. Stale PR alerts fire when a merged-but-not-closed PR has been sitting for two days. A scope creep warning triggers when new tickets are added mid-sprint beyond the agreed threshold. Sprint planning becomes more accurate because the agent pulls historical velocity data and adjusts available capacity for public holidays within the sprint window. At sprint close, it drafts a structured retrospective from the sprint's actual event history, not from memory. Users interact through the tools they already use — Bob or watsonx for digests and queries, Jira or GitHub Projects for board reconciliation — with no new tooling required.
@@ -26,5 +21,3 @@ IBM Bob was used at every stage of the engineering process, not as a one-off wri
 That last step is the most distinctive use of Bob in this project. Bob's ability to hold full project context across a session and produce structured documentation from its own prior outputs is the same capability the ScrumMaster Agent applies when it drafts a retrospective from a sprint's actual event history rather than from memory.
 
 ---
-
-*Prepared with IBM Bob — WatsonX ScrumMaster Agent, IBMer watsonx Challenge 2026*
