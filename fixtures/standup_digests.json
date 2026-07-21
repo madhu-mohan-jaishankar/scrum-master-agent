@@ -3,7 +3,7 @@
     "actor": "alice",
     "display_name": "Alice Chen",
     "sprint_id": "SPRINT-42",
-    "digest": "• Completed: Dark mode CSS implementation (PR #101) — waiting on review.\n• Working on: Addressing review comment from bob re iOS layout.\n• No blockers.",
+    "digest": "• Completed: Dark mode CSS implementation (PR #101) — waiting on review.\n• Working on: Addressing blocking comment from bob re iOS layout, and renaming variable per carol's nit.\n• No blockers.",
     "wip_count": 2,
     "velocity_pts_yesterday": 3.0
   },
@@ -11,15 +11,15 @@
     "actor": "bob",
     "display_name": "Bob Nguyen",
     "sprint_id": "SPRINT-42",
-    "digest": "• Completed: Left blocking review on PR #101 (iOS layout issue).\n• Working on: API rate-limiter unit tests.\n• Blocked: awaiting alice to push a fix so I can re-review and unblock the merge.",
-    "wip_count": 1,
+    "digest": "• Completed: Left blocking review on PR #101 (iOS layout issue). Diagnosed race condition in rate-limiter (SCRUM-109).\n• Working on: API rate-limiter fix — branch pushed, waiting for CI.\n• Blocked: awaiting alice to push iOS fix so I can re-review and unblock the merge.",
+    "wip_count": 2,
     "velocity_pts_yesterday": 0.0
   },
   {
     "actor": "carol",
     "display_name": "Carol Smith",
     "sprint_id": "SPRINT-42",
-    "digest": "• Completed: Scaffolded the embedding pipeline module (SCRUM-101, in progress).\n• Working on: Batch inference support for retro clustering.\n• No blockers.",
+    "digest": "• Completed: Embedding pipeline module (SCRUM-101 → Done 🎉). Pushed batch-inference branch.\n• Working on: Batch inference support for retro clustering — two commits in review.\n• No blockers.",
     "wip_count": 1,
     "velocity_pts_yesterday": 5.0
   },
@@ -27,7 +27,7 @@
     "actor": "dave",
     "display_name": "Dave Okafor",
     "sprint_id": "SPRINT-42",
-    "digest": "• Completed: Opened PR #88 (batch job runner refactor) — approved, CI passed.\n• Working on: Merging PR #88, then starting SCRUM-107 (logging improvements).\n• Stalled: PR #88 approved 3 days ago — needs merge.",
+    "digest": "• Completed: Merged PR #88 (batch job runner refactor) after 3-day stale wait.\n• Working on: Starting SCRUM-107 (logging improvements) now that #88 is merged.\n• Stalled: Was blocked on merge — now resolved. No current blockers.",
     "wip_count": 1,
     "velocity_pts_yesterday": 2.0
   },
@@ -35,8 +35,16 @@
     "actor": "eve",
     "display_name": "Eve Martinez",
     "sprint_id": "SPRINT-42",
-    "digest": "• Completed: Sprint planning capacity analysis and updated JIRA sprint board.\n• Working on: Cross-team dependency scan for upcoming sprint.\n• No blockers.",
+    "digest": "• Completed: Sprint capacity analysis, JIRA sprint board updated, created SCRUM-112 (security: API key rotation).\n• Working on: Cross-team dependency scan for upcoming sprint. SCRUM-112 needs urgent attention — adding to next standup.\n• No blockers.",
     "wip_count": 0,
     "velocity_pts_yesterday": 4.0
+  },
+  {
+    "actor": "frank",
+    "display_name": "Frank Li",
+    "sprint_id": "SPRINT-42",
+    "digest": "• Completed: Nothing to report — first day joining sprint mid-cycle.\n• Working on: Onboarding, reading codebase.\n• Blocked: needs repo access for demo-org/auth-service.",
+    "wip_count": 0,
+    "velocity_pts_yesterday": 0.0
   }
 ]

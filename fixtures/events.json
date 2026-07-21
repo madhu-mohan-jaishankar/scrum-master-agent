@@ -15,6 +15,31 @@
   },
   {
     "source": "github",
+    "type": "commit.pushed",
+    "actor": "alice",
+    "repo": "demo-org/frontend-web",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T09:20:00Z",
+    "payload": {
+      "ref": "refs/heads/feat/dark-mode",
+      "commits": [
+        { "id": "abc1111", "message": "feat: add dark mode toggle with system-preference detection" }
+      ]
+    }
+  },
+  {
+    "source": "ci",
+    "type": "ci.passed",
+    "actor": "github-actions[bot]",
+    "repo": "demo-org/frontend-web",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T09:35:00Z",
+    "payload": {
+      "workflow_run": { "name": "unit-tests", "conclusion": "success", "id": 9000 }
+    }
+  },
+  {
+    "source": "github",
     "type": "pr.comment",
     "actor": "bob",
     "repo": "demo-org/frontend-web",
@@ -29,6 +54,36 @@
     }
   },
   {
+    "source": "github",
+    "type": "pr.comment",
+    "actor": "carol",
+    "repo": "demo-org/frontend-web",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T10:45:00Z",
+    "payload": {
+      "action": "created",
+      "repository": { "full_name": "demo-org/frontend-web" },
+      "sender": { "login": "carol" },
+      "pull_request": { "number": 101 },
+      "comment": { "body": "Nit: variable name `isDark` should be `isDarkMode` per our naming convention." }
+    }
+  },
+  {
+    "source": "github",
+    "type": "pr.comment",
+    "actor": "eve",
+    "repo": "demo-org/frontend-web",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T11:10:00Z",
+    "payload": {
+      "action": "created",
+      "repository": { "full_name": "demo-org/frontend-web" },
+      "sender": { "login": "eve" },
+      "pull_request": { "number": 101 },
+      "comment": { "body": "" }
+    }
+  },
+  {
     "source": "ci",
     "type": "ci.failed",
     "actor": "github-actions[bot]",
@@ -37,6 +92,70 @@
     "timestamp": "2025-07-14T11:00:00Z",
     "payload": {
       "workflow_run": { "name": "unit-tests", "conclusion": "failure", "id": 9001 }
+    }
+  },
+  {
+    "source": "ci",
+    "type": "ci.passed",
+    "actor": "github-actions[bot]",
+    "repo": "demo-org/api-service",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T13:20:00Z",
+    "payload": {
+      "workflow_run": { "name": "unit-tests", "conclusion": "success", "id": 9002 }
+    }
+  },
+  {
+    "source": "ci",
+    "type": "ci.failed",
+    "actor": "github-actions[bot]",
+    "repo": "demo-org/api-service",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T15:10:00Z",
+    "payload": {
+      "workflow_run": { "name": "unit-tests", "conclusion": "failure", "id": 9003 }
+    }
+  },
+  {
+    "source": "ci",
+    "type": "ci.passed",
+    "actor": "github-actions[bot]",
+    "repo": "demo-org/api-service",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-14T16:45:00Z",
+    "payload": {
+      "workflow_run": { "name": "unit-tests", "conclusion": "success", "id": 9004 }
+    }
+  },
+  {
+    "source": "ci",
+    "type": "ci.failed",
+    "actor": "github-actions[bot]",
+    "repo": "demo-org/api-service",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-15T09:05:00Z",
+    "payload": {
+      "workflow_run": { "name": "unit-tests", "conclusion": "failure", "id": 9005 }
+    }
+  },
+  {
+    "source": "jira",
+    "type": "ticket.created",
+    "actor": "eve",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-15T10:00:00Z",
+    "payload": {
+      "webhookEvent": "jira:issue_created",
+      "issue": {
+        "key": "SCRUM-112",
+        "fields": {
+          "summary": "Security: rotate API keys after token leak",
+          "status": { "name": "To Do" },
+          "story_points": 8,
+          "assignee": { "displayName": "Bob Nguyen" }
+        }
+      },
+      "user": { "displayName": "Eve Martinez" }
     }
   },
   {
@@ -60,6 +179,88 @@
     }
   },
   {
+    "source": "jira",
+    "type": "ticket.updated",
+    "actor": "carol",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-15T16:00:00Z",
+    "payload": {
+      "webhookEvent": "jira:issue_updated",
+      "issue": {
+        "key": "SCRUM-101",
+        "fields": {
+          "summary": "Implement embedding pipeline",
+          "status": { "name": "Done" },
+          "story_points": 5,
+          "assignee": { "displayName": "Carol Smith" }
+        }
+      },
+      "user": { "displayName": "Carol Smith" }
+    }
+  },
+  {
+    "source": "jira",
+    "type": "ticket.updated",
+    "actor": "bob",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-15T11:00:00Z",
+    "payload": {
+      "webhookEvent": "jira:issue_updated",
+      "issue": {
+        "key": "SCRUM-109",
+        "fields": {
+          "summary": "Rate-limiter under concurrent load",
+          "status": { "name": "In Progress" },
+          "assignee": { "displayName": "Bob Nguyen" }
+        }
+      },
+      "user": { "displayName": "Bob Nguyen" }
+    }
+  },
+  {
+    "source": "github",
+    "type": "commit.pushed",
+    "actor": "bob",
+    "repo": "demo-org/api-service",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-15T11:30:00Z",
+    "payload": {
+      "ref": "refs/heads/fix/rate-limiter",
+      "commits": [
+        { "id": "def2222", "message": "fix: resolve race condition in rate-limiter under concurrent load" }
+      ]
+    }
+  },
+  {
+    "source": "github",
+    "type": "commit.pushed",
+    "actor": "carol",
+    "repo": "demo-org/ml-pipeline",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-15T14:00:00Z",
+    "payload": {
+      "ref": "refs/heads/feat/batch-inference",
+      "commits": [
+        { "id": "ghi3333", "message": "refactor: extract batch inference runner into separate module" },
+        { "id": "ghi3334", "message": "feat: add batch inference support for retro clustering" }
+      ]
+    }
+  },
+  {
+    "source": "github",
+    "type": "commit.pushed",
+    "actor": "dave",
+    "repo": "demo-org/ml-pipeline",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-15T09:00:00Z",
+    "payload": {
+      "ref": "refs/heads/refactor/batch-job",
+      "commits": [
+        { "id": "jkl4444", "message": "" }
+      ]
+    }
+  },
+  {
     "source": "github",
     "type": "pr.stale",
     "actor": "dave",
@@ -74,6 +275,42 @@
         "days_open": 3,
         "approved": true,
         "ci_status": "passed"
+      }
+    }
+  },
+  {
+    "source": "github",
+    "type": "pr.merged",
+    "actor": "dave",
+    "repo": "demo-org/ml-pipeline",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-16T10:15:00Z",
+    "payload": {
+      "action": "closed",
+      "repository": { "full_name": "demo-org/ml-pipeline" },
+      "sender": { "login": "dave" },
+      "pull_request": {
+        "number": 88,
+        "title": "refactor: clean up batch job runner",
+        "merged": true
+      }
+    }
+  },
+  {
+    "source": "github",
+    "type": "pr.closed",
+    "actor": "alice",
+    "repo": "demo-org/frontend-web",
+    "sprint_id": "SPRINT-42",
+    "timestamp": "2025-07-17T08:00:00Z",
+    "payload": {
+      "action": "closed",
+      "repository": { "full_name": "demo-org/frontend-web" },
+      "sender": { "login": "alice" },
+      "pull_request": {
+        "number": 102,
+        "title": "feat: experiment with CSS variables (abandoned)",
+        "merged": false
       }
     }
   }

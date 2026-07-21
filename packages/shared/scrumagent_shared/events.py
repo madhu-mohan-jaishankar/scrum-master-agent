@@ -57,6 +57,9 @@ class EventType(StrEnum):
     TRIGGER_RETRO = "trigger.retro"
     TRIGGER_STALE_PR_SCAN = "trigger.stale_pr_scan"
     TRIGGER_SPRINT_PLANNING = "trigger.sprint_planning"
+    TRIGGER_CEREMONY_SUMMARY = "trigger.ceremony_summary"
+    TRIGGER_BURNDOWN = "trigger.burndown"
+    TRIGGER_RELEASE_NOTES = "trigger.release_notes"
 
 
 class AgentEvent(BaseModel):

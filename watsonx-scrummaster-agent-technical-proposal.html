@@ -1,0 +1,953 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WatsonX ScrumMaster Agent — Technical Proposal</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f6f8fa;
+    --surface2: #eaeef2;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --muted: #57606a;
+    --accent: #0969da;
+    --accent2: #8250df;
+    --green: #1a7f37;
+    --green-bg: #dafbe1;
+    --yellow: #9a6700;
+    --yellow-bg: #fff8c5;
+    --red: #cf222e;
+    --red-bg: #ffebe9;
+    --orange: #bc4c00;
+    --orange-bg: #fff1e5;
+    --cyan: #1b7c83;
+    --cyan-bg: #d3f4f6;
+    --purple-bg: #fbefff;
+    --blue-bg: #ddf4ff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.97);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    backdrop-filter: blur(8px);
+  }
+  nav .nav-brand { font-weight: 700; font-size: 13px; color: var(--accent); margin-right: 12px; padding: 10px 0; white-space: nowrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 12px; padding: 10px 8px; border-radius: 4px; transition: color 0.2s; white-space: nowrap; }
+  nav a:hover { color: var(--text); }
+
+  .hero {
+    background: linear-gradient(135deg, #f6f8fa 0%, #ffffff 50%, #f0f6ff 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(9,105,218,0.06) 0%, transparent 70%); pointer-events: none; }
+  .hero-badge { display: inline-block; background: var(--blue-bg); border: 1px solid rgba(9,105,218,0.3); color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(22px, 4vw, 36px); font-weight: 800; letter-spacing: -0.02em; color: var(--text); margin-bottom: 12px; }
+  .hero h1 span { color: var(--accent); }
+  .hero .subtitle { font-size: 15px; color: var(--muted); max-width: 620px; margin: 0 auto 28px; }
+  .hero-meta { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .hero-meta-item { font-size: 12px; color: var(--muted); }
+  .hero-meta-item strong { color: var(--text); }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  section { padding: 48px 0 32px; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  h2 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+  h2 .sec-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--accent); color: #ffffff; font-size: 12px; font-weight: 800; border-radius: 6px; flex-shrink: 0; }
+  h3 { font-size: 15px; font-weight: 600; color: var(--text); margin: 24px 0 10px; }
+  h4 { font-size: 13px; font-weight: 600; color: var(--accent); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  p { margin-bottom: 12px; color: var(--muted); }
+  p strong { color: var(--text); }
+
+  .callout { background: var(--blue-bg); border: 1px solid rgba(9,105,218,0.2); border-left: 3px solid var(--accent); border-radius: 6px; padding: 14px 16px; margin: 16px 0; font-size: 13px; color: var(--muted); }
+  .callout.green { background: var(--green-bg); border: 1px solid rgba(26,127,55,0.25); border-left: 3px solid var(--green); }
+  .callout.yellow { background: var(--yellow-bg); border: 1px solid rgba(154,103,0,0.25); border-left: 3px solid var(--yellow); }
+  .callout.purple { background: var(--purple-bg); border: 1px solid rgba(130,80,223,0.25); border-left: 3px solid var(--accent2); }
+  .callout.red { background: var(--red-bg); border: 1px solid rgba(207,34,46,0.25); border-left: 3px solid var(--red); }
+  .callout strong { color: var(--text); }
+
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 12px; margin: 2px; }
+  .tag-blue { background: var(--blue-bg); color: var(--accent); border: 1px solid rgba(9,105,218,0.3); }
+  .tag-purple { background: var(--purple-bg); color: var(--accent2); border: 1px solid rgba(130,80,223,0.3); }
+  .tag-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(26,127,55,0.3); }
+  .tag-orange { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(188,76,0,0.3); }
+  .tag-cyan { background: var(--cyan-bg); color: var(--cyan); border: 1px solid rgba(27,124,131,0.3); }
+  .tag-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(207,34,46,0.3); }
+
+  .arch-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px 20px; margin: 20px 0; overflow-x: auto; }
+  .arch-title { text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 24px; }
+  .tier { display: flex; flex-direction: column; align-items: center; }
+  .tier-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .tier-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .agent-box { border-radius: 8px; padding: 10px 14px; font-size: 11px; font-weight: 600; text-align: center; min-width: 100px; max-width: 130px; line-height: 1.4; transition: transform 0.2s; }
+  .agent-box:hover { transform: translateY(-2px); }
+  .agent-top { background: var(--blue-bg); border: 1.5px solid var(--accent); color: var(--accent); min-width: 200px; padding: 14px 20px; font-size: 13px; }
+  .agent-mid { background: var(--purple-bg); border: 1.5px solid var(--accent2); color: var(--accent2); }
+  .agent-sub { background: var(--green-bg); border: 1.5px solid var(--green); color: var(--green); min-width: 86px; font-size: 10px; }
+  .connector-zone { display: flex; flex-direction: column; align-items: center; width: 100%; }
+  .arrow-down { width: 2px; height: 20px; background: var(--border); position: relative; }
+  .arrow-down::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid var(--border); }
+  .data-source-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .ds-box { background: var(--cyan-bg); border: 1px solid rgba(27,124,131,0.35); border-radius: 6px; padding: 6px 10px; font-size: 10px; color: var(--cyan); font-weight: 600; }
+
+  .evt-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px 20px; margin: 20px 0; overflow-x: auto; }
+  .evt-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .evt-box { border-radius: 8px; padding: 9px 14px; font-size: 11px; font-weight: 600; text-align: center; min-width: 90px; }
+  .evt-source { background: var(--cyan-bg); border: 1.5px solid var(--cyan); color: var(--cyan); }
+  .evt-bus { background: var(--orange-bg); border: 1.5px solid var(--orange); color: var(--orange); min-width: 160px; padding: 12px 20px; font-size: 12px; }
+  .evt-processor { background: var(--purple-bg); border: 1.5px solid var(--accent2); color: var(--accent2); }
+  .evt-wxai { background: var(--blue-bg); border: 1.5px solid var(--accent); color: var(--accent); min-width: 130px; }
+  .evt-sink { background: var(--green-bg); border: 1.5px solid var(--green); color: var(--green); }
+  .evt-arrow { color: var(--border); font-size: 18px; font-weight: 300; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+  th { background: var(--surface2); color: var(--text); font-weight: 700; padding: 10px 12px; text-align: left; border-bottom: 2px solid var(--border); font-size: 12px; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface); }
+  .td-dim { font-weight: 600; color: var(--text); }
+  .td-good { color: var(--green); font-weight: 600; }
+  .td-mid { color: var(--yellow); font-weight: 600; }
+  .td-bad { color: var(--red); font-weight: 600; }
+
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin: 16px 0; }
+  .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; transition: border-color 0.2s; }
+  .feature-card:hover { border-color: var(--accent); }
+  .feature-card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .feature-card p { font-size: 12px; margin: 0; }
+
+  .integration-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+  .int-pill { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: var(--text); }
+  .int-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .roadmap { position: relative; padding-left: 32px; margin: 16px 0; }
+  .roadmap::before { content: ''; position: absolute; left: 11px; top: 6px; bottom: 6px; width: 2px; background: var(--border); }
+  .roadmap-day { position: relative; margin-bottom: 20px; }
+  .roadmap-day::before { content: ''; position: absolute; left: -25px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+  .roadmap-day-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+  .roadmap-day ul { list-style: none; padding: 0; }
+  .roadmap-day ul li { font-size: 12px; color: var(--muted); padding: 2px 0; padding-left: 14px; position: relative; }
+  .roadmap-day ul li::before { content: '›'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+  .wx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 16px 0; }
+  .wx-card { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; }
+  .wx-card.purple { border-top-color: var(--accent2); }
+  .wx-card.cyan { border-top-color: var(--cyan); }
+  .wx-card-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .wx-card p { font-size: 12px; margin: 0; }
+
+  .submission-section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px; margin: 32px 0 16px; }
+  .submission-section .sub-note { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .submission-text { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px; font-size: 13px; color: var(--text); line-height: 1.8; white-space: pre-wrap; font-family: inherit; }
+
+  footer { text-align: center; padding: 24px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 8px; }
+
+  .section-intro { font-size: 13px; color: var(--muted); margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+
+  .layer-desc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 12px 0; }
+  .layer-desc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .layer-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+  .layer-desc-header strong { font-size: 13px; color: var(--text); }
+  .layer-desc p { font-size: 12px; margin: 0; }
+
+  /* ── EXECUTION PLAN STYLES ── */
+  .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin: 16px 0; }
+  .role-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .role-card:hover { border-color: var(--accent); }
+  .role-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .role-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+  .role-card ul { list-style: none; padding: 0; margin: 0; }
+  .role-card ul li { font-size: 12px; color: var(--muted); padding: 2px 0 2px 14px; position: relative; }
+  .role-card ul li::before { content: '·'; position: absolute; left: 0; color: var(--accent); font-weight: 700; font-size: 16px; line-height: 1.2; }
+
+  .sprint-table th { font-size: 11px; }
+  .sprint-table td { font-size: 12px; }
+  .day-header { background: var(--surface2) !important; font-weight: 700 !important; color: var(--text) !important; }
+
+  .critical-path { display: flex; align-items: center; flex-wrap: wrap; gap: 0; margin: 16px 0; }
+  .cp-node { background: var(--blue-bg); border: 1.5px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 8px 12px; font-size: 11px; font-weight: 700; text-align: center; min-width: 90px; }
+  .cp-arrow { color: var(--accent); font-size: 18px; padding: 0 4px; font-weight: 300; }
+  .cp-node.blocker { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+  .cp-node.done { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+
+  .standup-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin: 10px 0; }
+  .standup-card-day { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px; }
+  .standup-card ol { padding-left: 18px; margin: 0; }
+  .standup-card ol li { font-size: 12px; color: var(--muted); padding: 2px 0; }
+
+  .risk-table td:first-child { font-weight: 600; color: var(--text); min-width: 130px; }
+
+  .checklist { list-style: none; padding: 0; margin: 16px 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li .check-box { width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+  .checklist li strong { color: var(--text); }
+  .checklist-section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 16px 0; }
+  .checklist-header { background: var(--surface2); padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.07em; border-bottom: 1px solid var(--border); }
+
+  .sprint-goal-box { background: var(--blue-bg); border: 1px solid rgba(9,105,218,0.25); border-radius: 8px; padding: 18px 20px; margin: 16px 0; }
+  .sprint-goal-box .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 4px; }
+  .sprint-goal-box .goal { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.5; }
+
+  .dod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .dod-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 6px; padding: 12px 14px; }
+  .dod-card-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .dod-card p { font-size: 12px; margin: 0; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .hero { animation: fadeIn 0.5s ease; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">⬡ WatsonX ScrumMaster Agent</span>
+  <a href="#arch1">Architecture 1</a>
+  <a href="#arch2">Architecture 2</a>
+  <a href="#features">Features</a>
+  <a href="#integrations">Integrations</a>
+  <a href="#watsonx">WatsonX</a>
+  <a href="#comparison">Comparison</a>
+  <a href="#execution">Execution Plan</a>
+  <a href="#roles">Roles</a>
+  <a href="#sprint">Sprint Schedule</a>
+  <a href="#risks">Risks</a>
+  <a href="#checklist">Checklist</a>
+  <a href="#submission">Submission</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Competition Technical Proposal</div>
+  <h1><span>WatsonX</span> ScrumMaster Agent System</h1>
+  <p class="subtitle">A comprehensive exploration of two AI-powered architectures that autonomously run Scrum ceremonies, monitor sprint health, and surface intelligent insights across distributed engineering teams.</p>
+  <div class="hero-meta">
+    <span class="hero-meta-item"><strong>Platform</strong> IBM WatsonX AI</span>
+    <span class="hero-meta-item"><strong>Architectures</strong> 2 Proposals</span>
+    <span class="hero-meta-item"><strong>Team</strong> 9 Members</span>
+    <span class="hero-meta-item"><strong>Submission Deadline</strong> Tue 21 July EOD</span>
+  </div>
+</div>
+
+<div class="container">
+
+
+<section id="arch1">
+  <h2><span class="sec-num">1</span> Architecture 1 — Hierarchical Multi-Agent System</h2>
+  <p class="section-intro">A three-tier agent hierarchy where specialised agents at each level handle concerns appropriate to their scope — from raw repository signals at the bottom, through per-person synthesis in the middle, to sprint-wide orchestration at the top.</p>
+
+  <div class="arch-diagram">
+    <div class="arch-title">Three-Tier Agent Hierarchy — Data &amp; Control Flow</div>
+    <div class="tier">
+      <div class="tier-label" style="color:var(--accent)">Tier 3 — Orchestration Layer</div>
+      <div class="tier-row">
+        <div class="agent-box agent-top">🧠 ScrumMaster Agent<br /><span style="font-size:10px;font-weight:400;color:rgba(9,105,218,0.7)">Sprint Board · Ceremony Facilitation · Health Intelligence</span></div>
+      </div>
+    </div>
+    <div class="connector-zone">
+      <div class="arrow-down"></div>
+      <div style="font-size:10px;color:var(--muted);margin:2px 0">Aggregated Person Summaries + Alerts</div>
+      <div class="arrow-down"></div>
+    </div>
+    <div class="tier">
+      <div class="tier-label" style="color:var(--accent2)">Tier 2 — Person-Level Master Agents</div>
+      <div class="tier-row">
+        <div class="agent-box agent-mid">👤 Alice<br /><span style="font-size:9px;font-weight:400">WIP · Velocity · Standup</span></div>
+        <div class="agent-box agent-mid">👤 Bob<br /><span style="font-size:9px;font-weight:400">WIP · Velocity · Standup</span></div>
+        <div class="agent-box agent-mid">👤 Carol<br /><span style="font-size:9px;font-weight:400">WIP · Velocity · Standup</span></div>
+        <div class="agent-box agent-mid">👤 Dave<br /><span style="font-size:9px;font-weight:400">WIP · Velocity · Standup</span></div>
+        <div class="agent-box agent-mid" style="opacity:0.45">👤 +N more</div>
+      </div>
+    </div>
+    <div class="connector-zone">
+      <div class="arrow-down"></div>
+      <div style="font-size:10px;color:var(--muted);margin:2px 0">Raw Repo Events: PRs, Commits, CI, Comments</div>
+      <div class="arrow-down"></div>
+    </div>
+    <div class="tier">
+      <div class="tier-label" style="color:var(--green)">Tier 1 — Repository / Domain Sub-Agents</div>
+      <div class="tier-row">
+        <div class="agent-box agent-sub">⚙ frontend-web<br />repo agent</div>
+        <div class="agent-box agent-sub">⚙ api-service<br />repo agent</div>
+        <div class="agent-box agent-sub">⚙ ml-pipeline<br />repo agent</div>
+        <div class="agent-box agent-sub">⚙ infra-ops<br />repo agent</div>
+        <div class="agent-box agent-sub">⚙ mobile-app<br />repo agent</div>
+        <div class="agent-box agent-sub" style="opacity:0.45">⚙ +N repos</div>
+      </div>
+    </div>
+    <div class="connector-zone"><div class="arrow-down"></div></div>
+    <div class="data-source-row">
+      <div class="ds-box">GitHub / GitLab</div>
+      <div class="ds-box">CI Pipelines</div>
+      <div class="ds-box">Jira / Linear</div>
+      <div class="ds-box">GitHub Projects</div>
+      <div class="ds-box">Trello</div>
+      <div class="ds-box">PR Comments</div>
+    </div>
+  </div>
+
+  <h3>Tier 1 — Repository Sub-Agents</h3>
+  <div class="layer-desc">
+    <div class="layer-desc-header"><div class="layer-dot" style="background:var(--green)"></div><strong>Responsibilities</strong></div>
+    <p>Each sub-agent is scoped to a single repository or task domain. It polls or receives webhooks for: new commits (author, message, files changed), pull request lifecycle events (opened, review requested, approved, merged, stale), CI/CD pipeline outcomes (pass, fail, flaky), and inline PR comments. It maintains a lightweight local state object containing open PRs, their age, CI status, last commit timestamp, and review coverage. This raw structured state is the sole output pushed upward to assigned Person-Level Master Agents.</p>
+  </div>
+  <div class="callout"><strong>WatsonX at Tier 1:</strong> Sub-agents invoke <strong>watsonx.ai</strong> for lightweight classification tasks — distinguishing trivial typo commits from architectural changes, labelling PR review comments as "blocking concern" vs. "nit", and scoring CI flakiness patterns. Small, fast foundation model calls keep latency low.</div>
+
+  <h3>Tier 2 — Person-Level Master Agents</h3>
+  <div class="layer-desc">
+    <div class="layer-desc-header"><div class="layer-dot" style="background:var(--accent2)"></div><strong>Responsibilities</strong></div>
+    <p>One Master Agent exists per team member. It subscribes to the state feeds from all repo sub-agents where that person is active — as author, reviewer, or assignee. Its jobs are: (1) aggregate yesterday's activity into a natural-language standup summary, (2) track real-time WIP count against the team's configured WIP limit, (3) maintain a rolling velocity vector from previous sprints, and (4) detect anomalies such as a person going silent for more than one workday mid-sprint.</p>
+  </div>
+  <div class="callout purple"><strong>WatsonX at Tier 2:</strong> The person-level standup digest is generated by a <strong>watsonx.ai Granite or Llama 3</strong> model call with a structured prompt: raw activity JSON → concise first-person standup bullet points. Sentiment analysis on PR comment threads surfaces whether a person is blocked due to a genuine blocker or just awaiting review.</div>
+
+  <h3>Tier 3 — ScrumMaster Agent (Orchestrator)</h3>
+  <div class="layer-desc">
+    <div class="layer-desc-header"><div class="layer-dot" style="background:var(--accent)"></div><strong>Responsibilities</strong></div>
+    <p>The top-level agent receives processed summaries from all Person-Level agents and acts as the true ScrumMaster. It reconciles sprint board state against Jira/Linear/GitHub Projects, calculates burndown against target, runs scope creep detection, nags on stale PRs, triggers ceremony prompts, drafts release notes, and generates a pre-standup briefing sent to Slack or Teams.</p>
+  </div>
+  <div class="callout green"><strong>WatsonX at Tier 3:</strong> The orchestrator uses larger foundation model calls for high-quality prose generation: sprint health narrative, retro sentiment clustering, sprint planning capacity recommendations, and scope creep explanation. <strong>watsonx Orchestrate</strong> tool-calling handles Jira API writes, Slack message dispatch, and calendar event creation.</div>
+
+  <h3>Inter-Tier Data Flow</h3>
+  <table>
+    <thead><tr><th>From</th><th>To</th><th>Payload</th><th>Frequency</th></tr></thead>
+    <tbody>
+      <tr><td>Data Sources</td><td>Sub-Agents</td><td>Webhook events / polled JSON (commits, PRs, CI runs)</td><td>Real-time / 5-min poll</td></tr>
+      <tr><td>Sub-Agents</td><td>Person Master Agents</td><td>Structured state snapshot: open PRs, CI status, review gaps</td><td>On change + 15-min heartbeat</td></tr>
+      <tr><td>Person Master Agents</td><td>ScrumMaster Agent</td><td>Per-person standup digest, WIP count, velocity, alert flags</td><td>Daily (pre-standup) + on critical alert</td></tr>
+      <tr><td>ScrumMaster Agent</td><td>Notification Channels</td><td>Standup brief, health report, ceremony prompts, alerts</td><td>Scheduled + event-triggered</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section id="arch2">
+  <h2><span class="sec-num">2</span> Architecture 2 — Event-Driven Intelligence Pipeline</h2>
+  <p class="section-intro">Rather than a fixed hierarchy of permanently running agents, this architecture treats every development signal as an event on a central event bus. Stateless processor functions handle classification and enrichment; WatsonX AI provides inference on demand; and a single stateful Sprint Context Store drives all output actions.</p>
+
+  <div class="evt-diagram">
+    <div class="arch-title">Event-Driven Pipeline — Signal to Action Flow</div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Event Sources</div>
+    <div class="evt-row">
+      <div class="evt-box evt-source">GitHub<br />Webhooks</div>
+      <div class="evt-box evt-source">GitLab<br />Webhooks</div>
+      <div class="evt-box evt-source">Jira<br />Webhooks</div>
+      <div class="evt-box evt-source">Linear<br />API Poll</div>
+      <div class="evt-box evt-source">Slack<br />Events</div>
+      <div class="evt-box evt-source">CI<br />Hooks</div>
+    </div>
+    <div class="evt-row"><div class="evt-arrow">↓</div></div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Unified Event Bus</div>
+    <div class="evt-row"><div class="evt-box evt-bus">📨 Event Bus<br /><span style="font-size:10px;font-weight:400">(Kafka / Redis Streams)</span></div></div>
+    <div class="evt-row"><div class="evt-arrow">↓</div></div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Stateless Event Processors</div>
+    <div class="evt-row">
+      <div class="evt-box evt-processor">PR<br />Classifier</div>
+      <div class="evt-box evt-processor">Commit<br />Analyser</div>
+      <div class="evt-box evt-processor">CI<br />Monitor</div>
+      <div class="evt-box evt-processor">Ticket<br />Tracker</div>
+      <div class="evt-box evt-processor">Activity<br />Aggregator</div>
+    </div>
+    <div class="evt-row"><div class="evt-arrow">↓</div></div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">AI Inference + Sprint Context Store</div>
+    <div class="evt-row">
+      <div class="evt-box evt-wxai">🤖 watsonx.ai<br />Inference API</div>
+      <div style="font-size:18px;color:var(--border)">⇄</div>
+      <div class="evt-box" style="background:var(--orange-bg);border:1.5px solid var(--orange);color:var(--orange);min-width:140px">🗄 Sprint Context<br />Store (Vector DB)</div>
+    </div>
+    <div class="evt-row"><div class="evt-arrow">↓</div></div>
+    <div style="text-align:center;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Action Dispatcher</div>
+    <div class="evt-row">
+      <div class="evt-box evt-sink">Slack<br />/ Teams</div>
+      <div class="evt-box evt-sink">Jira<br />Updates</div>
+      <div class="evt-box evt-sink">Email<br />Digest</div>
+      <div class="evt-box evt-sink">Dashboard<br />API</div>
+      <div class="evt-box evt-sink">Retro<br />Doc</div>
+    </div>
+  </div>
+
+  <div class="callout yellow"><strong>Key Insight:</strong> Architecture 2 has no "agents" running continuously. Every compute unit is either a stateless event processor or a scheduled watsonx.ai call. The sprint intelligence lives in the Sprint Context Store — making it auditable, replayable, and trivially horizontally scalable.</div>
+
+  <h3>Architecture 2 Tradeoffs vs. Architecture 1</h3>
+  <table>
+    <thead><tr><th>Dimension</th><th>Architecture 1 (Hierarchical)</th><th>Architecture 2 (Event-Driven)</th></tr></thead>
+    <tbody>
+      <tr><td class="td-dim">Scalability</td><td>Scales with agent instances; process count grows linearly</td><td class="td-good">Horizontally scalable; add processors without re-architecting</td></tr>
+      <tr><td class="td-dim">State management</td><td>Distributed across agent memory — harder to audit</td><td class="td-good">Centralised in Sprint Context Store — auditable and replayable</td></tr>
+      <tr><td class="td-dim">Latency</td><td class="td-good">Near-real-time per person due to always-on agents</td><td>Slightly higher for digest generation (trigger-based)</td></tr>
+      <tr><td class="td-dim">Operational complexity</td><td class="td-bad">High — many long-running processes to manage</td><td class="td-good">Lower — functions + one event bus + one store</td></tr>
+      <tr><td class="td-dim">Fault tolerance</td><td>Agent crash loses local state without checkpointing</td><td class="td-good">Bus retries + idempotent processors; durable by default</td></tr>
+      <tr><td class="td-dim">Team-size alignment</td><td class="td-good">Natural 1:1 mapping to people and repos</td><td>Uniform model — person context derived from store queries</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section id="features">
+  <h2><span class="sec-num">3</span> Core Feature Set</h2>
+  <p class="section-intro">The complete ScrumMaster Agent capability surface — covering sprint health, ceremony automation, and developer experience. Green = will build; Yellow = if time permits.</p>
+
+  <h3>Sprint Health Intelligence</h3>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-title">📉 Burndown Trend Forecasting <span class="tag tag-green">Must</span></div>
+      <p>Linear regression over daily story point completion rate, projected to sprint end. Proactive nudge: "At current pace, 3 tickets won't be done by Friday."</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">🔴 Stalled vs. Blocked <span class="tag tag-green">Must</span></div>
+      <p>Stalled = no activity + no stated blocker. Blocked = explicit dependency or review waiting. Different escalation paths and message tones for each.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">🔔 Meaningful Alerts <span class="tag tag-green">Must</span></div>
+      <p>Threshold-configurable Slack/Teams/email alerts: stale PRs, CI failure streaks, WIP limit breaches, sprint end approaching with points still open.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">📋 Standup Digest Per Person <span class="tag tag-green">Must</span></div>
+      <p>LLM-generated per-person standup from commits/PR activity/comments. Progress bar comparing current sprint progress to previous standup snapshot (Mebin's feature).</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">🔭 Scope Creep Detection <span class="tag tag-green">Must</span></div>
+      <p>Flags tickets added mid-sprint beyond threshold (&gt;10% story points after day 1). Keeps the sprint board honest — synced with what actually happened in GitHub.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">⏰ Stale PR Nagging <span class="tag tag-green">Must</span></div>
+      <p>PR approved but not merged for 2+ days → context-aware ping with PR title, author, reviewer(s), age, and CI status. Escalates after second threshold.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">🗓 Pre-Standup Brief <span class="tag tag-green">Must</span></div>
+      <p>Sent 15 minutes before standup: all commits, merges, tickets updated, blockers, and the day's sprint health score since yesterday's standup.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">🔄 Retro Auto-Drafting <span class="tag tag-green">Must</span></div>
+      <p>Synthesises sprint sentiment from PR comment threads + anonymous survey. Structures into went well / improve / action items with quoted examples.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">📦 Story Breakdown Assist <span class="tag tag-orange">Stretch</span></div>
+      <p>Flags stories larger than 8 story points and suggests how to break them down. Before creating a new ticket, checks if similar work already exists.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">🤝 Cross-Team Blocker Scan <span class="tag tag-orange">Stretch</span></div>
+      <p>Scans backlog for tickets that overlap across teams, surfacing external blockers before they become sprint problems.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">📅 Holiday / PTO Capacity <span class="tag tag-orange">Stretch</span></div>
+      <p>Factors public holidays and PTO into sprint capacity estimates, giving a realistic "will we finish?" forecast adjusted for actual availability.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">🆕 New Hire Onboarding <span class="tag tag-orange">Stretch</span></div>
+      <p>"What's going on" feature: generates a brief from previous meeting talking points, open PRs, and in-progress tickets. Suggests good-first-issue tickets (Yosief's feature).</p>
+    </div>
+  </div>
+
+  <h3>Ceremony Facilitation</h3>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-card-title">🗣 Daily Standup (Async) <span class="tag tag-green">Must</span></div>
+      <p>Collects async Slack/Teams updates, surfaces blockers, flags members who haven't updated, and generates a standup summary digest merged with auto-derived activity.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">📅 Sprint Planning Assist <span class="tag tag-green">Must</span></div>
+      <p>Pulls velocity from previous N sprints, suggests capacity range, warns about overcommitment, and recommends which backlog tickets fit the sprint.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">💬 Retrospective Facilitation <span class="tag tag-green">Must</span></div>
+      <p>Anonymous survey → watsonx.ai sentiment clustering → themes grouped under went well / improve, with representative anonymised quotes and tracked action items.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title">🚀 Sprint Review Release Notes <span class="tag tag-green">Must</span></div>
+      <p>Auto-generates stakeholder-facing release notes from completed tickets and merged PRs. Auto-generates meeting agenda from current tasks/PRs/issues (Yosief's feature).</p>
+    </div>
+  </div>
+</section>
+
+
+<section id="integrations">
+  <h2><span class="sec-num">4</span> Integration Surface</h2>
+  <p class="section-intro">The ScrumMaster Agent connects across the full engineering toolchain — reading from project management, version control, CI/CD, and communication platforms.</p>
+
+  <h3>Project Management</h3>
+  <div class="integration-row">
+    <div class="int-pill"><div class="int-dot" style="background:#0052CC"></div>Jira</div>
+    <div class="int-pill"><div class="int-dot" style="background:#5e6ad2"></div>Linear</div>
+    <div class="int-pill"><div class="int-dot" style="background:#1f883d"></div>GitHub Projects</div>
+    <div class="int-pill"><div class="int-dot" style="background:#0052CC"></div>Trello</div>
+  </div>
+
+  <h3>Version Control &amp; CI/CD</h3>
+  <div class="integration-row">
+    <div class="int-pill"><div class="int-dot" style="background:#1f883d"></div>GitHub (REST + Webhooks)</div>
+    <div class="int-pill"><div class="int-dot" style="background:#e2432a"></div>GitLab (REST + Webhooks)</div>
+    <div class="int-pill"><div class="int-dot" style="background:#FC6D26"></div>GitHub Actions / GitLab CI</div>
+  </div>
+
+  <h3>Communication</h3>
+  <div class="integration-row">
+    <div class="int-pill"><div class="int-dot" style="background:#4A154B"></div>Slack (Bot + Events API)</div>
+    <div class="int-pill"><div class="int-dot" style="background:#6264A7"></div>Microsoft Teams (Webhook)</div>
+    <div class="int-pill"><div class="int-dot" style="background:#EA4335"></div>Email (SMTP / SendGrid)</div>
+  </div>
+
+  <div class="callout"><strong>Normalisation layer:</strong> All external events are normalised into a canonical <code>AgentEvent</code> schema — <code>{ source, type, actor, repo, timestamp, payload }</code> — before any agent logic runs. Adding a new integration = write one adapter only.</div>
+</section>
+
+
+<section id="watsonx">
+  <h2><span class="sec-num">5</span> WatsonX Capabilities Leveraged</h2>
+  <p class="section-intro">IBM WatsonX provides the AI backbone at every layer — from low-latency classification at the repo level to high-quality prose generation at the orchestration level.</p>
+
+  <div class="wx-grid">
+    <div class="wx-card">
+      <div class="wx-card-name">watsonx.ai — Foundation Models</div>
+      <p><strong>Granite / Llama 3</strong> models power all natural language generation: standup digests, sprint health narratives, retro drafts, release notes, and alert messages. Smaller models for high-frequency classification; larger for ceremony output.</p>
+    </div>
+    <div class="wx-card purple">
+      <div class="wx-card-name">watsonx Orchestrate</div>
+      <p>Used at Tier 3 to define tool-calling workflows: Jira ticket update, Slack message post, Linear sprint state read, calendar event creation. Orchestrate's agent framework maps directly to the ScrumMaster orchestrator role.</p>
+    </div>
+    <div class="wx-card cyan">
+      <div class="wx-card-name">watsonx.ai Prompt Lab</div>
+      <p>Sprint planning and retro prompts are versioned in Prompt Lab, letting non-developer team members tune tone and format without code changes.</p>
+    </div>
+    <div class="wx-card">
+      <div class="wx-card-name">RAG Pattern</div>
+      <p>Sprint Context (open tickets, PR metadata, team velocity, historical data) is injected as retrieval-augmented context into foundation model calls, grounding LLM output in real sprint data.</p>
+    </div>
+    <div class="wx-card purple">
+      <div class="wx-card-name">watsonx.ai Embeddings</div>
+      <p>PR comment threads and retro survey responses are embedded and clustered to identify recurring themes — used for retro sentiment clustering and team-wide vs. individual blocker detection.</p>
+    </div>
+    <div class="wx-card cyan">
+      <div class="wx-card-name">watsonx.data (Optional)</div>
+      <p>For full-stack WatsonX deployments: historical sprint data and velocity metrics stored in watsonx.data, enabling richer cross-sprint trend analysis via Presto/SQL queries fed into prompts.</p>
+    </div>
+  </div>
+
+  <div class="callout green"><strong>Why WatsonX:</strong> Enterprise-grade data governance, on-premises deployment options, and a unified platform spanning model inference, orchestration, and data. Granite models are optimised for instruction-following at low latency — ideal for the high-frequency classification tasks at Tier 1.</div>
+</section>
+
+
+<section id="comparison">
+  <h2><span class="sec-num">6</span> Architecture Comparison</h2>
+  <p class="section-intro">Structured comparison across the dimensions most relevant to a production AI agent deployment — and to a competition demo.</p>
+
+  <table>
+    <thead>
+      <tr><th style="width:22%">Dimension</th><th style="width:38%">Arch 1 — Hierarchical Multi-Agent</th><th style="width:38%">Arch 2 — Event-Driven Pipeline</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="td-dim">Scalability</td><td><span class="tag tag-orange">Medium</span> — process count grows linearly with team + repo size</td><td><span class="tag tag-green">High</span> — stateless processors scale horizontally</td></tr>
+      <tr><td class="td-dim">Latency</td><td><span class="tag tag-green">Low</span> — always-on agents provide near-real-time propagation</td><td><span class="tag tag-orange">Medium</span> — scheduled triggers introduce slight lag</td></tr>
+      <tr><td class="td-dim">Fault Tolerance</td><td><span class="tag tag-orange">Medium</span> — agent crashes lose in-memory state without checkpointing</td><td><span class="tag tag-green">High</span> — durable event bus enables replay</td></tr>
+      <tr><td class="td-dim">Explainability</td><td><span class="tag tag-orange">Medium</span> — trace spans multiple agent boundaries</td><td><span class="tag tag-green">High</span> — event log is a full audit trail</td></tr>
+      <tr><td class="td-dim">Ease of Implementation</td><td><span class="tag tag-green">Medium-High</span> — WatsonX Orchestrate provides scaffolding; hierarchy maps to team mental model</td><td><span class="tag tag-orange">Medium</span> — requires event bus setup and schema discipline</td></tr>
+      <tr><td class="td-dim">Personalisation</td><td><span class="tag tag-green">High</span> — per-person agents maintain individual context natively</td><td><span class="tag tag-orange">Medium</span> — person context derived from store queries</td></tr>
+      <tr><td class="td-dim">Competition Suitability</td><td><span class="tag tag-green">★ Recommended</span> — compelling mental model, maps to Orchestrate, fastest demo path</td><td><span class="tag tag-blue">Alternative</span> — better for production scale</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout purple"><strong>Decision:</strong> The team will build <strong>Architecture 1 (Hierarchical Multi-Agent)</strong>. It maps directly to WatsonX Orchestrate, produces the most visually compelling demo for judges, and its three-tier structure creates natural workstream boundaries for a 9-person team to build in parallel.</div>
+</section>
+
+
+<section id="execution">
+  <h2><span class="sec-num">7</span> Execution Plan Overview</h2>
+  <p class="section-intro">Architecture 1 is confirmed as the build target. Its three-tier structure maps naturally to three parallel workstreams, allowing all 9 team members to work simultaneously from Day 1 with minimal blocking dependencies.</p>
+
+  <div class="sprint-goal-box">
+    <div class="label">Sprint Goal</div>
+    <div class="goal">Deliver a working end-to-end demo of the WatsonX Hierarchical ScrumMaster Agent system — showing real PR/ticket data flowing from repo sub-agents through person agents to a ScrumMaster orchestrator — with Slack standup digest, stale PR nag, pre-standup brief, and retro draft generated live, submitted by Tuesday 21 July EOD.</div>
+  </div>
+
+  <h3>Definition of Done</h3>
+  <div class="dod-grid">
+    <div class="dod-card"><div class="dod-card-title">Repo Sub-Agent</div><p>Receives GitHub webhook, classifies PR comment via watsonx.ai, emits structured state JSON, detects stale PRs.</p></div>
+    <div class="dod-card"><div class="dod-card-title">Person Master Agent</div><p>Produces a natural-language standup digest for a named team member from repo agent state using a Granite model call.</p></div>
+    <div class="dod-card"><div class="dod-card-title">ScrumMaster Orchestrator</div><p>Reads Jira sprint board, generates pre-standup brief, sends Slack message, detects scope creep vs. planning snapshot.</p></div>
+    <div class="dod-card"><div class="dod-card-title">Demo Flow</div><p>End-to-end walkthrough recorded or live: commit → webhook → digest → Slack post → retro draft. No hardcoded strings in demo output.</p></div>
+    <div class="dod-card"><div class="dod-card-title">Submission Package</div><p>GitHub repo (clean, .env.example present), demo video, this proposal document, and a 1-page README with setup instructions.</p></div>
+    <div class="dod-card"><div class="dod-card-title">WatsonX Integration</div><p>At least 2 distinct watsonx.ai model calls in the demo — one classification, one prose generation — using real API credentials.</p></div>
+  </div>
+</section>
+
+
+<section id="roles">
+  <h2><span class="sec-num">8</span> Team Roles &amp; Responsibilities</h2>
+  <p class="section-intro">9 members split across 3 workstreams mirroring the 3-tier architecture, plus a lead and a demo/docs pair. Each person owns a clearly bounded deliverable.</p>
+
+  <div class="role-grid">
+    <div class="role-card">
+      <div class="role-name">Cormac</div>
+      <div class="role-title" style="color:var(--accent)">Tech Lead / Architect</div>
+      <ul>
+        <li>Overall system design and API contract between tiers</li>
+        <li>WatsonX project setup, API key provisioning, model selection</li>
+        <li>Integration review and final code sign-off</li>
+        <li>Unblocks teammates; owns the repo skeleton / monorepo structure</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-name">Mebin</div>
+      <div class="role-title" style="color:var(--accent2)">Person Agent Lead</div>
+      <ul>
+        <li>Builds the PersonAgent class (Tier 2)</li>
+        <li>Implements standup digest prompt + watsonx.ai Granite call</li>
+        <li>Builds the progress bar / sprint snapshot comparison feature</li>
+        <li>WIP limit tracking and velocity rolling average</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-name">Richard</div>
+      <div class="role-title" style="color:var(--accent2)">Person Agent — Blocker Intelligence</div>
+      <ul>
+        <li>Implements stalled vs. blocked classification logic</li>
+        <li>Tracks unresolved blockers across sprints, flags recurring patterns</li>
+        <li>Task recommendation engine (availability + workload + priority)</li>
+        <li>Human-in-the-loop suggestion interface</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-name">Claudia</div>
+      <div class="role-title" style="color:var(--green)">Repo Sub-Agent Lead</div>
+      <ul>
+        <li>Builds RepoAgent class (Tier 1): webhook receiver, PR state map</li>
+        <li>PR comment classification via watsonx.ai (blocking / nit / question)</li>
+        <li>CI pipeline monitoring and flakiness detection</li>
+        <li>Stale PR detection and nag trigger</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-name">Adeolu</div>
+      <div class="role-title" style="color:var(--green)">Repo Sub-Agent — Integrations</div>
+      <ul>
+        <li>GitHub &amp; Jira API clients and webhook normalisation layer</li>
+        <li>Canonical AgentEvent schema implementation</li>
+        <li>Sprint board reconciliation: GitHub vs. Jira state diff</li>
+        <li>One-click fix suggestions for board drift</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-name">Crown</div>
+      <div class="role-title" style="color:var(--orange)">ScrumMaster Orchestrator Lead</div>
+      <ul>
+        <li>Builds ScrumMasterAgent (Tier 3) using WatsonX Orchestrate</li>
+        <li>Pre-standup brief generation (RAG prompt + Granite call)</li>
+        <li>Burndown trend forecasting (linear regression)</li>
+        <li>Scope creep detection vs. planning snapshot</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-name">Ayden</div>
+      <div class="role-title" style="color:var(--orange)">Orchestrator — Ceremonies</div>
+      <ul>
+        <li>Sprint planning assist: velocity-based capacity suggestions</li>
+        <li>Retro facilitation: anonymous survey form + sentiment clustering</li>
+        <li>Meeting agenda auto-generation from current tasks/PRs/issues</li>
+        <li>Sprint review release notes generation from merged PRs</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-name">Yosief</div>
+      <div class="role-title" style="color:var(--cyan)">Slack / Notification Layer</div>
+      <ul>
+        <li>Slack bot integration: post digests, alerts, stale PR nags</li>
+        <li>Async standup collection: DM prompt → merge → channel post</li>
+        <li>"What's going on" onboarding brief generation</li>
+        <li>New hire ticket recommendation (good first issue suggestions)</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <div class="role-name">Dev 9 (TBD)</div>
+      <div class="role-title" style="color:var(--muted)">Demo, Docs &amp; QA</div>
+      <ul>
+        <li>Builds and maintains realistic demo data fixtures</li>
+        <li>End-to-end demo script: simulates full sprint day for recording</li>
+        <li>Writes README, .env.example, and setup guide</li>
+        <li>Records demo video; assembles final submission package</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<section id="sprint">
+  <h2><span class="sec-num">9</span> Sprint Schedule — Thu 17 Jul → Tue 21 Jul</h2>
+  <p class="section-intro">A 5-day build sprint. Today (Thu 16 Jul) is setup day. The sprint runs Thursday through Tuesday, with a hard submission cutoff of Tuesday EOD — one day ahead of the Wednesday deadline.</p>
+
+  <h3>Critical Path</h3>
+  <p>The following chain must not slip — each item blocks the next. All other work can proceed in parallel.</p>
+  <div class="critical-path">
+    <div class="cp-node done">WatsonX API<br />provisioned</div>
+    <div class="cp-arrow">→</div>
+    <div class="cp-node">AgentEvent<br />schema</div>
+    <div class="cp-arrow">→</div>
+    <div class="cp-node">RepoAgent<br />+ webhook</div>
+    <div class="cp-arrow">→</div>
+    <div class="cp-node">PersonAgent<br />standup call</div>
+    <div class="cp-arrow">→</div>
+    <div class="cp-node">ScrumMaster<br />orchestrator</div>
+    <div class="cp-arrow">→</div>
+    <div class="cp-node">Slack post<br />end-to-end</div>
+    <div class="cp-arrow">→</div>
+    <div class="cp-node">Demo<br />recorded</div>
+  </div>
+  <div class="callout red"><strong>Critical risk:</strong> If the AgentEvent schema is not agreed and merged by end of Thu 17, all three workstreams will be building against incompatible interfaces. Cormac must publish the schema as the first merged PR of the sprint.</div>
+
+  <h3>Day-by-Day Schedule</h3>
+  <table class="sprint-table">
+    <thead><tr><th>Day</th><th>Tier 1 — Claudia, Adeolu</th><th>Tier 2 — Mebin, Richard</th><th>Tier 3 — Crown, Ayden</th><th>Slack/Demo — Yosief, Dev 9</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="day-header" colspan="5">TODAY — Thu 17 Jul · Setup &amp; Foundations</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Thu 17</td>
+        <td>Set up repo skeleton. Claudia: GitHub webhook receiver stub. Adeolu: Jira API client + AgentEvent schema (PR by 5pm).</td>
+        <td>Wait for AgentEvent schema. Read Orchestrate docs. Mebin: stub PersonAgent class.</td>
+        <td>Crown: WatsonX project + test Granite call. Ayden: sprint board read from Jira API.</td>
+        <td>Yosief: Slack bot token setup, test DM. Dev 9: demo fixture data (fake sprint, 5 devs, 3 repos).</td>
+      </tr>
+      <tr>
+        <td class="day-header" colspan="5">Fri 18 Jul · Core Agent Logic</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Fri 18</td>
+        <td>Claudia: RepoAgent PR state map + stale PR detection. Adeolu: CI monitor, webhook event normalisation, board drift detection.</td>
+        <td>Mebin: PersonAgent subscribes to RepoAgent state, implements standup digest prompt + watsonx.ai call. Richard: stalled vs. blocked classifier.</td>
+        <td>Crown: ScrumMasterAgent skeleton + burndown regression. Ayden: scope creep detection (planning snapshot diff).</td>
+        <td>Yosief: async standup DM collection flow. Dev 9: demo script v1 draft, README skeleton.</td>
+      </tr>
+      <tr>
+        <td class="day-header" colspan="5">Sat 19 Jul · Integration Day</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Sat 19</td>
+        <td>Claudia: PR comment classification via watsonx.ai. Adeolu: wire RepoAgent → PersonAgent state push. Integration test with demo fixtures.</td>
+        <td>Mebin: progress bar / snapshot comparison. Richard: task recommendation logic. Wire PersonAgent → ScrumMaster output.</td>
+        <td>Crown: pre-standup brief RAG prompt + Granite call. Ayden: sprint planning assist (velocity suggestions), retro survey form.</td>
+        <td>Yosief: Slack nag for stale PRs + health alerts. Dev 9: run end-to-end test with fixture data, log gaps.</td>
+      </tr>
+      <tr>
+        <td class="day-header" colspan="5">Sun 20 Jul · Ceremony Features &amp; Polish</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Sun 20</td>
+        <td>Claudia + Adeolu: bug fixes from Sat integration test. Add Linear adapter if time permits.</td>
+        <td>Mebin + Richard: bug fixes. Mebin: polish standup digest output format. Richard: human-in-the-loop suggestion UI (text-based).</td>
+        <td>Crown: retro sentiment clustering (embeddings). Ayden: meeting agenda auto-generation + release notes from merged PRs.</td>
+        <td>Yosief: "What's going on" onboarding brief. Dev 9: end-to-end demo script finalised, demo video first attempt.</td>
+      </tr>
+      <tr>
+        <td class="day-header" colspan="5">Mon 21 Jul · Hardening &amp; Submission Prep</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Mon 21</td>
+        <td>All Tier 1: final bug fixes, remove hardcoded values, PR review complete.</td>
+        <td>All Tier 2: final bug fixes, ensure standup digest works with real fixture data end-to-end.</td>
+        <td>All Tier 3: final bug fixes, confirm Slack post works live. Ayden: final release notes output check.</td>
+        <td>Yosief: final Slack integration test. Dev 9: record final demo video, assemble submission package.</td>
+      </tr>
+      <tr>
+        <td class="day-header" colspan="5">Tue 22 Jul · ✅ Submission Day (EOD Deadline)</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Tue 22</td>
+        <td colspan="4"><strong>AM:</strong> Final code freeze by 12:00. Cormac: final review pass, merge all PRs, tag release. Dev 9: submission checklist walkthrough. <strong>PM:</strong> Submit by 17:00. Buffer until EOD for any last-minute issues before Wed deadline.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Daily Standup Prompts</h3>
+  <p>Post these questions in the team Slack channel each morning at 09:30. Responses due by 10:00; summary posted automatically by the bot (once it's built — manually before that).</p>
+
+  <div class="standup-card">
+    <div class="standup-card-day">Every Day — 09:30 Prompt</div>
+    <ol>
+      <li>What did you complete yesterday? (be specific: PR number, function name, feature done)</li>
+      <li>What are you working on today?</li>
+      <li>Do you have a blocker? If yes — is it <em>blocked</em> (waiting on someone/something) or <em>stalled</em> (unclear how to proceed)?</li>
+      <li>Are you on track to hit your day's deliverable from the sprint schedule above?</li>
+    </ol>
+  </div>
+
+  <div class="standup-card">
+    <div class="standup-card-day">Thu 17 — Additional Check</div>
+    <ol>
+      <li>Is your local dev environment set up and the repo cloned?</li>
+      <li>Have you tested a watsonx.ai API call successfully?</li>
+      <li>Have you reviewed and understood the AgentEvent schema?</li>
+    </ol>
+  </div>
+
+  <div class="standup-card">
+    <div class="standup-card-day">Sat 19 — Integration Checkpoint</div>
+    <ol>
+      <li>Can your component accept a real AgentEvent from the tier below it?</li>
+      <li>Can your component emit a correct payload to the tier above it?</li>
+      <li>Have you run the end-to-end test with the demo fixtures?</li>
+    </ol>
+  </div>
+
+  <div class="standup-card">
+    <div class="standup-card-day">Mon 21 — Final Readiness Check</div>
+    <ol>
+      <li>Is your component free of hardcoded credentials, test tokens, or placeholder strings?</li>
+      <li>Does your code work with the shared demo fixtures without manual intervention?</li>
+      <li>Have all your PRs been reviewed and merged to main?</li>
+    </ol>
+  </div>
+</section>
+
+
+<section id="risks">
+  <h2><span class="sec-num">10</span> Risk Register</h2>
+  <p class="section-intro">Top 5 delivery risks with likelihood, impact, and concrete mitigation actions.</p>
+
+  <table class="risk-table">
+    <thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="td-dim">WatsonX API access / quota issues</td>
+        <td><span class="tag tag-orange">Medium</span></td>
+        <td><span class="tag tag-red">High</span></td>
+        <td>Cormac provisions API keys on Thu 17 AM as first action. All teammates test a basic call by 12:00 Thu. Prepare a mock LLM response shim so development can continue if the API is down.</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Interface mismatch between tiers</td>
+        <td><span class="tag tag-orange">Medium</span></td>
+        <td><span class="tag tag-red">High</span></td>
+        <td>AgentEvent schema is the single most important first deliverable. Adeolu drafts it; Cormac reviews; merged as first PR by 17:00 Thu 17. No Tier 2 or 3 work starts until schema is merged.</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Slack bot approval / workspace access</td>
+        <td><span class="tag tag-green">Low</span></td>
+        <td><span class="tag tag-orange">Medium</span></td>
+        <td>Yosief creates Slack app and requests workspace install on Thu 17 AM. If approval is slow, demo can use a personal test workspace. Email/console output is the fallback for notification delivery.</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Scope creep within the build week</td>
+        <td><span class="tag tag-red">High</span></td>
+        <td><span class="tag tag-orange">Medium</span></td>
+        <td>All "Stretch" features (story breakdown, cross-team scan, holiday capacity) are explicitly out of scope until Sat 19 PM. Cormac is empowered to cut any in-flight stretch work after Sun 20 midday if core path is at risk.</td>
+      </tr>
+      <tr>
+        <td class="td-dim">Team member unavailability (weekend)</td>
+        <td><span class="tag tag-orange">Medium</span></td>
+        <td><span class="tag tag-orange">Medium</span></td>
+        <td>All workstreams are designed to be completable by one person if their pair is unavailable. Each person documents their work-in-progress state in a shared Notion/Confluence page each evening so anyone can pick it up.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section id="checklist">
+  <h2><span class="sec-num">11</span> Tuesday 22 July — Submission Checklist</h2>
+  <p class="section-intro">Complete every item before 17:00 Tuesday. Cormac and Dev 9 sign off together. Wednesday is buffer only.</p>
+
+  <div class="checklist-section">
+    <div class="checklist-header">🟢 Code &amp; Repository</div>
+    <ul class="checklist">
+      <li><span class="check-box"></span><span><strong>All PRs merged to main.</strong> No open feature branches. Release tag created (e.g. <code>v1.0.0-submission</code>).</span></li>
+      <li><span class="check-box"></span><span><strong>No hardcoded credentials.</strong> All secrets in <code>.env</code> (gitignored). <code>.env.example</code> present with all required keys listed.</span></li>
+      <li><span class="check-box"></span><span><strong>README complete.</strong> Covers: what it does, architecture overview, setup steps, how to run the demo, WatsonX configuration.</span></li>
+      <li><span class="check-box"></span><span><strong>Demo fixtures committed.</strong> Realistic fake sprint data in <code>/fixtures</code> so any judge can reproduce the demo output.</span></li>
+    </ul>
+  </div>
+
+  <div class="checklist-section">
+    <div class="checklist-header">🤖 WatsonX Integration</div>
+    <ul class="checklist">
+      <li><span class="check-box"></span><span><strong>At least 2 live watsonx.ai calls in demo.</strong> One classification (Tier 1), one prose generation (Tier 2 standup digest or Tier 3 brief).</span></li>
+      <li><span class="check-box"></span><span><strong>WatsonX Orchestrate tool-calling demonstrated.</strong> At minimum: one Jira read and one Slack post via Orchestrate.</span></li>
+      <li><span class="check-box"></span><span><strong>Model IDs and prompt versions documented</strong> in README or <code>/prompts</code> directory.</span></li>
+    </ul>
+  </div>
+
+  <div class="checklist-section">
+    <div class="checklist-header">🎬 Demo &amp; Submission Package</div>
+    <ul class="checklist">
+      <li><span class="check-box"></span><span><strong>Demo video recorded.</strong> Covers: pre-standup brief → per-person standup digest → stale PR nag → retro draft. Maximum 5 minutes.</span></li>
+      <li><span class="check-box"></span><span><strong>Demo runs end-to-end without manual intervention</strong> using fixture data. No "sorry, let me fix that" moments in the recording.</span></li>
+      <li><span class="check-box"></span><span><strong>This proposal document included</strong> in submission package (HTML file or PDF export).</span></li>
+      <li><span class="check-box"></span><span><strong>Submission form filled in.</strong> Repo link, demo video link, team member names, and 150-word plain-text summary (see Section 12) all pasted in.</span></li>
+    </ul>
+  </div>
+
+  <div class="checklist-section">
+    <div class="checklist-header">✅ Feature Verification</div>
+    <ul class="checklist">
+      <li><span class="check-box"></span><span><strong>Repo Sub-Agent</strong> receives a GitHub push webhook and emits a correct AgentEvent.</span></li>
+      <li><span class="check-box"></span><span><strong>Person Master Agent</strong> produces a natural-language standup digest with a real watsonx.ai call (not mocked).</span></li>
+      <li><span class="check-box"></span><span><strong>ScrumMaster Agent</strong> reads Jira sprint board and generates a pre-standup brief with sprint health status.</span></li>
+      <li><span class="check-box"></span><span><strong>Slack message posted</strong> to a real channel with the standup digest or pre-standup brief.</span></li>
+      <li><span class="check-box"></span><span><strong>Stale PR detection triggers</strong> a Slack/console nag for at least one fixture PR older than threshold.</span></li>
+      <li><span class="check-box"></span><span><strong>Retro draft generated</strong> (can be from fixture survey data) and output to Slack or console.</span></li>
+    </ul>
+  </div>
+
+  <div class="callout green"><strong>If anything is not green by 15:00 Tuesday:</strong> Cormac makes the call to cut it from the demo and mark it as "planned but not demoed" in the README. A clean demo of 80% features beats a buggy demo of 100%. Submit on time.</div>
+</section>
+
+
+<section id="submission">
+  <h2><span class="sec-num">12</span> Competition Submission Summary</h2>
+  <p class="section-intro">Plain-text summary for direct copy-paste into the competition submission form. Written in clear, non-technical language. (150–250 words)</p>
+
+  <div class="submission-section">
+    <div class="sub-note">↓ Copy and paste the block below directly into your competition submission form</div>
+    <pre class="submission-text">The WatsonX ScrumMaster Agent is an AI-powered system that acts as a fully autonomous Scrum 
+Master for software development teams. It continuously monitors every aspect of a team's sprint 
+— from code commits and pull requests on GitHub to task boards in Jira or Linear — and uses 
+IBM WatsonX AI to turn that raw activity into clear, actionable intelligence.
+
+The system is built as a three-tier hierarchy of intelligent agents. At the bottom level, 
+specialised agents watch each code repository, tracking the health of pull requests, build 
+pipelines, and code reviews in real time. One level up, each team member has their own 
+personal agent that synthesises all of their activity into a concise daily standup update — 
+automatically, without the developer having to write anything. At the top, a single 
+ScrumMaster Agent pulls everything together: it monitors sprint progress, spots scope creep 
+before it becomes a problem, nudges the team about stale pull requests, and facilitates every 
+Scrum ceremony — from sprint planning with data-driven capacity recommendations to 
+retrospectives with anonymised sentiment analysis.
+
+IBM WatsonX AI's foundation models generate the natural-language summaries, health reports, 
+and retrospective drafts. WatsonX Orchestrate handles the tool-calling workflows that write 
+back to Jira, post to Slack, and send email digests. The result is a system that saves 
+engineering teams hours of ceremony overhead each sprint, surfaces problems earlier, and 
+makes the Scrum process genuinely intelligent — not just automated.
+    </pre>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div style="border-top:1px solid var(--border);padding-top:16px;max-width:860px;margin:0 auto">
+    Made with IBM Bob  ·  WatsonX ScrumMaster Agent Technical Proposal  ·  Competition Submission Document
+  </div>
+</footer>
+
+</body>
+</html>

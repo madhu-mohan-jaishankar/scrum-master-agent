@@ -27,6 +27,8 @@ _ACTION_COLOURS: dict[str, str] = {
     "release_notes": _BLUE,
     "jira_update": _YELLOW,
     "standup_digest": _GREEN,
+    "ceremony_summary": _CYAN,
+    "burndown_chart": _GREEN,
 }
 
 _CHANNEL_LABELS: dict[str, str] = {

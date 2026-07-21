@@ -8,18 +8,37 @@
     "committed_points": 40.0,
     "completed_points": 14.0,
     "in_progress_points": 12.0,
-    "wip_count": 4,
-    "scope_creep_points": 2.0,
-    "projected_completion": "on track (Day 7)",
+    "wip_count": 5,
+    "scope_creep_points": 8.0,
+    "projected_completion": "at risk (Day 9 — 1 day over)",
     "blockers": [
       "PR #101 blocked: iOS layout concern (bob → alice)",
-      "CI failing on demo-org/api-service (unit-tests)"
+      "CI flaky on demo-org/api-service (unit-tests — 3 alternations in 5 runs)",
+      "SCRUM-112 urgent mid-sprint add: security key rotation (8 pts, unplanned)"
     ],
     "stale_prs": [
-      "PR #88 demo-org/ml-pipeline — approved 3 days ago, not merged"
+      "PR #88 demo-org/ml-pipeline — approved 3 days ago, not yet merged"
     ],
     "ci_failures": [
-      "demo-org/api-service / unit-tests — failed 2025-07-14T11:00Z"
+      "demo-org/api-service / unit-tests — failed 2025-07-14T11:00Z",
+      "demo-org/api-service / unit-tests — failed 2025-07-14T15:10Z (flaky)",
+      "demo-org/api-service / unit-tests — failed 2025-07-15T09:05Z (flaky)"
     ]
+  },
+  {
+    "sprint_id": "SPRINT-43",
+    "sprint_name": "Sprint 43 — Hardening Sprint",
+    "sprint_day": 1,
+    "sprint_total_days": 8,
+    "total_points": 36.0,
+    "committed_points": 36.0,
+    "completed_points": 0.0,
+    "in_progress_points": 0.0,
+    "wip_count": 0,
+    "scope_creep_points": 0.0,
+    "projected_completion": "on track (Day 8)",
+    "blockers": [],
+    "stale_prs": [],
+    "ci_failures": []
   }
 ]

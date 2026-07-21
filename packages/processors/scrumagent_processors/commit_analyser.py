@@ -46,7 +46,8 @@ class CommitAnalyserProcessor(BaseProcessor):
             return ProcessorResult()
 
         # Classify only the head commit (most recent)
-        head_message: str = commits[-1].get("message", "").splitlines()[0]
+        lines = commits[-1].get("message", "").splitlines()
+        head_message: str = lines[0] if lines else ""
         if not head_message:
             return ProcessorResult()
 
