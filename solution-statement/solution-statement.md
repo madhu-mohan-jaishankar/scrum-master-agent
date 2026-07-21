@@ -1,20 +1,20 @@
 # Solution Statement
 
 **IBMer watsonx Challenge 2026**
-**Team:** Cormac, Mebin, Richard, Claudia, Adeolu, Crown, Ayden, Yosief
+**Team:** Cormac, Mebin, Richard, Claudia, Adeolu, Crown, Ayden, Yosief, Madhu
 **Submission:** WatsonX ScrumMaster Agent
 
 ---
 
 ## The Problem and Process
 
-Agile teams lose significant productive time every sprint to the overhead of running Scrum itself. Daily standups are slow because nobody has a clear picture of what actually happened since yesterday. Sprint boards drift out of sync with reality — tickets marked "In Progress" while the underlying PR has been approved and sitting unmerged for three days. Blockers go unnoticed until the standup, by which point half a day is already lost. Retrospectives are shallow because nobody can recall the details of a two-week sprint from memory. Planning sessions overcommit because there is no fast, reliable way to factor in team velocity, public holidays, or the complexity distribution of the backlog.
+Agile teams lose significant productive time every sprint to the overhead of running Scrum itself. Daily standups are slow because nobody has a clear picture of what actually happened since yesterday. Sprint boards drift out of sync with reality. Tickets are marked "In Progress" while the underlying PR has been approved and sitting unmerged for three days. Blockers go unnoticed until the standup, by which point half a day minimum is already lost. Retrospectives are shallow because nobody can recall the details of a two-week sprint from memory. Planning sessions overcommit because there is no fast, reliable way to factor in team velocity, public holidays, or the complexity distribution of the backlog.
 
-The WatsonX ScrumMaster Agent addresses this directly. It is an AI-powered agent that treats the sprint board as a source of truth that is supposed to be accurate — and continuously reconciles that board against what is actually happening across GitHub, CI pipelines, Jira, and team communication channels.
+The WatsonX ScrumMaster Agent addresses this directly. It is an AI-powered agent that treats the sprint board as a source of truth that is supposed to be accurate and continuously reconciles that board against what is actually happening across GitHub, CI pipelines, Jira, and team communication channels.
 
 ## Target Users and How They Interact with the Agent
 
-The target users are software engineering teams running Agile sprints — specifically Scrum Masters, tech leads, and individual contributors who lose time each day to ceremony overhead and information gaps. At IBM, this maps directly to delivery teams working across client engagements where sprint hygiene, velocity tracking, and stakeholder communication are ongoing responsibilities.
+The target users are software engineering teams running Agile sprints, specifically Scrum Masters, tech leads, and individual contributors who lose time each day to ceremony overhead and information gaps. At IBM, this maps directly to delivery teams working across client engagements where sprint hygiene, velocity tracking, and stakeholder communication are ongoing responsibilities.
 
 Users interact with the agent through the tools they already use: Slack or Microsoft Teams for notifications and standup digests, Jira or GitHub Projects for sprint board reconciliation, and a conversational interface for on-demand queries. The agent works in the background and surfaces information proactively — a pre-standup brief arrives 15 minutes before the meeting, stale PR alerts fire when a merged-but-not-closed PR has been sitting for two days, and a scope creep warning triggers when new tickets are added mid-sprint beyond the agreed threshold. No new tooling or workflow changes are required from the team.
 
