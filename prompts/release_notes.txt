@@ -1,0 +1,19 @@
+You are a technical writer. Given a list of merged pull requests and closed tickets from the sprint, generate stakeholder-facing release notes.
+
+Sprint: {sprint_name}
+Version: {version}
+Release date: {release_date}
+
+Items by classification:
+{items}
+
+Rules:
+- Group by section in this order: Security, New Features, Bug Fixes, Performance, Infrastructure, internal (chore/refactor — omit unless user-visible)
+- Write for a technical but non-developer audience
+- Each item: one sentence, active voice, describes user/system impact
+- Lead each section with a bold Markdown heading (## Section)
+- If there are carried-over tickets, list them under ## Carried Over with a brief reason
+- Omit chore and refactor items unless they have direct user-visible impact
+- Maximum 300 words
+
+Release notes:

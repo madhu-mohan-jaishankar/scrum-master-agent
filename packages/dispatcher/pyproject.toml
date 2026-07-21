@@ -1,0 +1,16 @@
+[project]
+name = "scrumagent-dispatcher"
+version = "0.1.0"
+description = "Action Dispatcher — console output for PoC; Slack/Jira stubs for real integrations"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.7",
+    "scrumagent-shared",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["scrumagent_dispatcher"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -1,0 +1,38 @@
+[
+  {
+    "sprint_id": "SPRINT-42",
+    "start_date": "2025-07-14",
+    "total_days": 8,
+    "committed_points": 40.0,
+    "scope_changes": [
+      { "day": 2, "delta": 8.0, "reason": "SCRUM-112: Security — API key rotation (urgent, unplanned)" }
+    ],
+    "daily_completed": [
+      { "day": 1, "points": 9.0,  "tickets": ["SCRUM-103", "SCRUM-105"] },
+      { "day": 2, "points": 5.0,  "tickets": ["SCRUM-101"] },
+      { "day": 3, "points": 0.0,  "tickets": [] },
+      { "day": 4, "points": 7.0,  "tickets": ["SCRUM-108", "SCRUM-109"] },
+      { "day": 5, "points": 3.0,  "tickets": ["SCRUM-119"] },
+      { "day": 6, "points": 0.0,  "tickets": [] },
+      { "day": 7, "points": 5.0,  "tickets": ["SCRUM-107", "SCRUM-115"] },
+      { "day": 8, "points": 3.0,  "tickets": ["SCRUM-116"] }
+    ]
+  },
+  {
+    "sprint_id": "SPRINT-43",
+    "start_date": "2025-07-26",
+    "total_days": 8,
+    "committed_points": 36.0,
+    "scope_changes": [],
+    "daily_completed": [
+      { "day": 1, "points": 8.0,  "tickets": ["SCRUM-112"] },
+      { "day": 2, "points": 0.0,  "tickets": [] },
+      { "day": 3, "points": 5.0,  "tickets": ["SCRUM-118"] },
+      { "day": 4, "points": 3.0,  "tickets": ["SCRUM-115"] },
+      { "day": 5, "points": 5.0,  "tickets": ["SCRUM-107"] },
+      { "day": 6, "points": 5.0,  "tickets": ["SCRUM-116"] },
+      { "day": 7, "points": 8.0,  "tickets": ["SCRUM-117"] },
+      { "day": 8, "points": 2.0,  "tickets": ["SCRUM-119"] }
+    ]
+  }
+]

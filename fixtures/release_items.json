@@ -1,0 +1,219 @@
+[
+  {
+    "sprint_id": "SPRINT-42",
+    "sprint_name": "Sprint 42 — Demo Sprint",
+    "release_date": "2025-07-25",
+    "version": "v1.4.0",
+    "merged_prs": [
+      {
+        "number": 101,
+        "title": "feat: add dark mode toggle",
+        "repo": "demo-org/frontend-web",
+        "author": "alice",
+        "merged_at": "2025-07-17T12:00:00Z",
+        "classification": "feature",
+        "tickets": ["SCRUM-103"],
+        "description": "Adds a dark mode toggle to the web UI that automatically respects the OS-level system preference and allows manual override."
+      },
+      {
+        "number": 88,
+        "title": "refactor: clean up batch job runner",
+        "repo": "demo-org/ml-pipeline",
+        "author": "dave",
+        "merged_at": "2025-07-16T10:15:00Z",
+        "classification": "refactor",
+        "tickets": ["SCRUM-88"],
+        "description": "Internal refactor of the batch job runner — no user-visible change but reduces future maintenance burden."
+      },
+      {
+        "number": 95,
+        "title": "fix: iOS layout breakage on dark-mode CSS",
+        "repo": "demo-org/frontend-web",
+        "author": "alice",
+        "merged_at": "2025-07-17T15:30:00Z",
+        "classification": "bugfix",
+        "tickets": ["SCRUM-108"],
+        "description": "Fixes the mobile layout regression on iOS Safari introduced by the dark-mode CSS changes in PR #101."
+      },
+      {
+        "number": 97,
+        "title": "fix: resolve race condition in rate-limiter",
+        "repo": "demo-org/api-service",
+        "author": "bob",
+        "merged_at": "2025-07-18T09:00:00Z",
+        "classification": "bugfix",
+        "tickets": ["SCRUM-109"],
+        "description": "Resolves a race condition in the API rate-limiter that caused intermittent 429 errors under concurrent load."
+      },
+      {
+        "number": 99,
+        "title": "feat: batch inference support for retro clustering",
+        "repo": "demo-org/ml-pipeline",
+        "author": "carol",
+        "merged_at": "2025-07-18T14:00:00Z",
+        "classification": "feature",
+        "tickets": ["SCRUM-101"],
+        "description": "The embedding pipeline now supports batch inference, enabling retrospective clustering to process sprint data in a single pass."
+      },
+      {
+        "number": 103,
+        "title": "ci: stabilise flaky unit-test suite on api-service",
+        "repo": "demo-org/api-service",
+        "author": "bob",
+        "merged_at": "2025-07-19T11:00:00Z",
+        "classification": "chore",
+        "tickets": ["SCRUM-105"],
+        "description": "Root cause of the flaky unit tests identified (shared state in test fixtures) and fixed. CI reliability improved by ~40%."
+      }
+    ],
+    "closed_tickets": [
+      {
+        "key": "SCRUM-103",
+        "summary": "Dark mode toggle for web UI",
+        "classification": "feature",
+        "points": 5,
+        "assignee": "alice"
+      },
+      {
+        "key": "SCRUM-101",
+        "summary": "Implement embedding pipeline with batch inference",
+        "classification": "feature",
+        "points": 5,
+        "assignee": "carol"
+      },
+      {
+        "key": "SCRUM-108",
+        "summary": "Fix iOS mobile layout regression",
+        "classification": "bugfix",
+        "points": 3,
+        "assignee": "alice"
+      },
+      {
+        "key": "SCRUM-109",
+        "summary": "Fix rate-limiter race condition under concurrent load",
+        "classification": "bugfix",
+        "points": 5,
+        "assignee": "bob"
+      },
+      {
+        "key": "SCRUM-105",
+        "summary": "Stabilise flaky CI pipeline",
+        "classification": "chore",
+        "points": 3,
+        "assignee": "bob"
+      },
+      {
+        "key": "SCRUM-88",
+        "summary": "Refactor batch job runner",
+        "classification": "refactor",
+        "points": 3,
+        "assignee": "dave"
+      }
+    ],
+    "carried_over_tickets": [
+      {
+        "key": "SCRUM-112",
+        "summary": "Security: rotate API keys after token leak",
+        "classification": "security",
+        "points": 8,
+        "reason": "Added mid-sprint Day 2; insufficient capacity to complete."
+      }
+    ]
+  },
+  {
+    "sprint_id": "SPRINT-43",
+    "sprint_name": "Sprint 43 — Hardening Sprint",
+    "release_date": "2025-08-08",
+    "version": "v1.5.0",
+    "merged_prs": [
+      {
+        "number": 110,
+        "title": "security: rotate API keys and revoke exposed credentials",
+        "repo": "demo-org/api-service",
+        "author": "bob",
+        "merged_at": "2025-07-28T10:00:00Z",
+        "classification": "security",
+        "tickets": ["SCRUM-112"],
+        "description": "Rotates all API keys exposed in the July security incident and adds automated secret-scanning enforcement to CI."
+      },
+      {
+        "number": 112,
+        "title": "fix: root cause of flaky CI test suite",
+        "repo": "demo-org/api-service",
+        "author": "bob",
+        "merged_at": "2025-07-30T14:00:00Z",
+        "classification": "bugfix",
+        "tickets": ["SCRUM-118"],
+        "description": "Eliminates shared mutable state in test fixtures that caused intermittent failures, reducing CI false-positive rate to zero."
+      },
+      {
+        "number": 114,
+        "title": "feat: merge SLA automation — Slack reminder bot",
+        "repo": "demo-org/api-service",
+        "author": "alice",
+        "merged_at": "2025-08-01T09:30:00Z",
+        "classification": "feature",
+        "tickets": ["SCRUM-116"],
+        "description": "Automatically posts a Slack reminder when an approved PR has not been merged within 48 hours, reducing stale-PR accumulation."
+      },
+      {
+        "number": 116,
+        "title": "feat: PTO-aware sprint capacity calculator",
+        "repo": "demo-org/ml-pipeline",
+        "author": "eve",
+        "merged_at": "2025-08-05T11:00:00Z",
+        "classification": "feature",
+        "tickets": ["SCRUM-117"],
+        "description": "Sprint planning now pulls PTO data from the company calendar and automatically reduces capacity to prevent over-commitment."
+      },
+      {
+        "number": 117,
+        "title": "docs: add onboarding checklist and repo access guide",
+        "repo": "demo-org/frontend-web",
+        "author": "frank",
+        "merged_at": "2025-07-29T16:00:00Z",
+        "classification": "chore",
+        "tickets": ["SCRUM-115"],
+        "description": "New onboarding checklist and repo-access guide published to the internal wiki; reduces new-joiner setup time from 2 days to under 2 hours."
+      }
+    ],
+    "closed_tickets": [
+      {
+        "key": "SCRUM-112",
+        "summary": "Security: API key rotation",
+        "classification": "security",
+        "points": 8,
+        "assignee": "bob"
+      },
+      {
+        "key": "SCRUM-118",
+        "summary": "Flaky CI root cause fix",
+        "classification": "bugfix",
+        "points": 5,
+        "assignee": "bob"
+      },
+      {
+        "key": "SCRUM-116",
+        "summary": "Merge SLA automation",
+        "classification": "feature",
+        "points": 5,
+        "assignee": "alice"
+      },
+      {
+        "key": "SCRUM-117",
+        "summary": "PTO calendar sprint capacity integration",
+        "classification": "feature",
+        "points": 8,
+        "assignee": "eve"
+      },
+      {
+        "key": "SCRUM-115",
+        "summary": "Auth-service repo access and onboarding doc",
+        "classification": "chore",
+        "points": 3,
+        "assignee": "frank"
+      }
+    ],
+    "carried_over_tickets": []
+  }
+]

@@ -1,0 +1,174 @@
+[
+  {
+    "id": "cer-001",
+    "sprint_id": "SPRINT-42",
+    "ceremony_type": "daily_standup",
+    "title": "Daily Standup — Day 3",
+    "date": "2025-07-16T09:00:00Z",
+    "facilitator": "eve",
+    "attendees": ["alice", "bob", "carol", "dave", "eve"],
+    "absent": [],
+    "notes": [
+      "alice: PR #101 in review, addressing iOS layout blocker from bob.",
+      "bob: Rate-limiter race condition isolated. Fix branch pushed. Still waiting on alice to re-request review.",
+      "carol: SCRUM-101 complete. Batch inference branch in progress.",
+      "dave: PR #88 approved 3 days ago — needs someone to click merge.",
+      "eve: Added SCRUM-112 (security key rotation, 8 pts) to sprint. Confirmed no scope swap done yet."
+    ],
+    "decisions": [
+      "Dave will merge PR #88 today.",
+      "Eve to schedule scope-swap discussion for tomorrow."
+    ],
+    "blockers": [
+      "PR #101 blocked on iOS fix (alice owns).",
+      "SCRUM-112 added without removing points — sprint is now at risk."
+    ],
+    "action_items": [
+      { "owner": "dave", "action": "Merge PR #88 before EOD." },
+      { "owner": "eve", "action": "Facilitate scope-swap discussion Day 4 standup." },
+      { "owner": "alice", "action": "Push iOS layout fix and re-request review from bob." }
+    ]
+  },
+  {
+    "id": "cer-002",
+    "sprint_id": "SPRINT-42",
+    "ceremony_type": "sprint_review",
+    "title": "Sprint 42 Review",
+    "date": "2025-07-25T14:00:00Z",
+    "facilitator": "eve",
+    "attendees": ["alice", "bob", "carol", "dave", "eve", "product_mgr", "stakeholder_a"],
+    "absent": ["frank"],
+    "notes": [
+      "Demoed: dark mode toggle (alice) — stakeholders approved, shipping to prod.",
+      "Demoed: embedding pipeline batch inference (carol) — product loves it, expand scope next sprint.",
+      "Demoed: batch job runner refactor (dave) — internal improvement, no visible change.",
+      "Not demoed: rate-limiter fix (bob) — deployed silently, covered by CI metrics.",
+      "SCRUM-112 security work not complete — carries to Sprint 43."
+    ],
+    "decisions": [
+      "Dark mode and embedding pipeline accepted for release.",
+      "SCRUM-112 is priority #1 in Sprint 43.",
+      "Batch inference scope expansion added to Sprint 43 backlog."
+    ],
+    "velocity": {
+      "committed_points": 40,
+      "completed_points": 32,
+      "carried_over_points": 8,
+      "completion_rate_pct": 80
+    },
+    "demo_items": [
+      { "ticket": "SCRUM-103", "title": "Dark mode toggle", "status": "accepted" },
+      { "ticket": "SCRUM-101", "title": "Embedding pipeline batch inference", "status": "accepted" },
+      { "ticket": "SCRUM-88",  "title": "Batch job runner refactor", "status": "accepted" },
+      { "ticket": "SCRUM-112", "title": "Security: API key rotation", "status": "not_ready" }
+    ]
+  },
+  {
+    "id": "cer-003",
+    "sprint_id": "SPRINT-42",
+    "ceremony_type": "retrospective",
+    "title": "Sprint 42 Retrospective",
+    "date": "2025-07-25T15:30:00Z",
+    "facilitator": "eve",
+    "attendees": ["alice", "bob", "carol", "dave", "eve", "frank"],
+    "absent": [],
+    "format": "4Ls",
+    "notes": {
+      "liked": [
+        "Async standup format — saved ~3 hours of meeting time.",
+        "CI flakiness auto-detection caught recurring issue early.",
+        "Embedding pipeline shipped on schedule despite scope pressure."
+      ],
+      "learned": [
+        "Scope additions mid-sprint without a formal swap process caused delivery risk.",
+        "New team members need repo access pre-provisioned before sprint start.",
+        "Approved PRs left unmerged create rebase friction for other branches."
+      ],
+      "lacked": [
+        "No merge SLA — PR #88 sat approved for 3 days.",
+        "No capacity buffer for urgent (security) tickets.",
+        "Onboarding checklist missing for new joiners (frank was blocked day 1–2)."
+      ],
+      "longed_for": [
+        "PTO-aware sprint capacity calculator.",
+        "Automated Slack nudge when a PR is approved but not merged for >48h.",
+        "A security ticket fast-track process that forces a scope-swap trade."
+      ]
+    },
+    "action_items": [
+      { "owner": "tech_lead",  "action": "Automate 48h merge SLA Slack reminder.", "due": "Sprint 43 Day 2" },
+      { "owner": "eve",        "action": "Integrate PTO calendar into capacity planning.", "due": "Sprint 43 planning" },
+      { "owner": "eng_mgr",    "action": "Create and distribute onboarding checklist.", "due": "Before Sprint 43 Day 1" },
+      { "owner": "product_mgr","action": "Define security ticket intake + scope-swap process.", "due": "Sprint 43 Day 1" }
+    ]
+  },
+  {
+    "id": "cer-004",
+    "sprint_id": "SPRINT-43",
+    "ceremony_type": "sprint_planning",
+    "title": "Sprint 43 Planning",
+    "date": "2025-07-26T10:00:00Z",
+    "facilitator": "eve",
+    "attendees": ["alice", "bob", "carol", "dave", "eve", "frank", "product_mgr"],
+    "absent": [],
+    "capacity": {
+      "total_dev_days": 40,
+      "pto_days": 4,
+      "effective_dev_days": 36,
+      "story_points_per_dev_day": 1.0,
+      "available_points": 36
+    },
+    "committed_tickets": [
+      { "key": "SCRUM-112", "title": "Security: API key rotation",              "points": 8,  "owner": "bob",   "priority": "urgent" },
+      { "key": "SCRUM-107", "title": "Logging improvements",                    "points": 5,  "owner": "dave",  "priority": "high" },
+      { "key": "SCRUM-115", "title": "Auth-service repo access + onboarding",   "points": 3,  "owner": "frank", "priority": "high" },
+      { "key": "SCRUM-116", "title": "Merge SLA automation (Slack bot)",        "points": 5,  "owner": "alice", "priority": "medium" },
+      { "key": "SCRUM-117", "title": "PTO calendar capacity integration",       "points": 8,  "owner": "eve",   "priority": "medium" },
+      { "key": "SCRUM-118", "title": "Flaky CI root cause fix",                 "points": 5,  "owner": "bob",   "priority": "medium" },
+      { "key": "SCRUM-119", "title": "Dark mode variable rename nit",           "points": 2,  "owner": "alice", "priority": "low" }
+    ],
+    "notes": [
+      "SCRUM-112 security work is hard deadline — must ship Sprint 43.",
+      "Frank to be unblocked Day 1 via new onboarding checklist.",
+      "No new tickets accepted after Sprint 43 Day 1 without a points trade.",
+      "Eve will send capacity sheet with PTO marked before kickoff."
+    ],
+    "risks": [
+      "Bob carrying both SCRUM-112 (urgent) and SCRUM-118 (flaky CI) — may need to split.",
+      "SCRUM-117 depends on external PTO API access not yet approved."
+    ]
+  },
+  {
+    "id": "cer-005",
+    "sprint_id": "SPRINT-42",
+    "ceremony_type": "all_hands",
+    "title": "Engineering All-Hands — July 2025",
+    "date": "2025-07-18T16:00:00Z",
+    "facilitator": "eng_mgr",
+    "attendees": ["alice", "bob", "carol", "dave", "eve", "frank", "eng_mgr", "product_mgr", "cto"],
+    "absent": [],
+    "agenda": [
+      "Q2 engineering OKR check-in",
+      "AI/ML platform update — embedding pipeline milestone",
+      "Security incident post-mortem overview (SCRUM-112 context)",
+      "Team growth — welcome Frank Li",
+      "Q3 priorities preview"
+    ],
+    "highlights": [
+      "Embedding pipeline shipped on time — first ML feature in prod.",
+      "API key exposure detected by automated secret scanning; rotation in progress (SCRUM-112).",
+      "Team expanded to 6 engineers; onboarding process being formalised.",
+      "CI stability improved: flaky test detection reduced false-failure noise by ~40%."
+    ],
+    "decisions": [
+      "Security posture review to be added as standing agenda item each all-hands.",
+      "Onboarding checklist approved as official process from Sprint 43.",
+      "Q3 north star: ship AI-assisted code review to all repos by end of quarter."
+    ],
+    "announcements": [
+      "Frank Li joins the team — welcome!",
+      "Sprint 43 will be a hardening sprint focused on security and tech debt.",
+      "All-hands moves to bi-weekly cadence starting August."
+    ]
+  }
+]

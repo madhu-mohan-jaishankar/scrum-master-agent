@@ -1,0 +1,100 @@
+[
+  {
+    "id": "resp-001",
+    "sprint_id": "SPRINT-42",
+    "question": "What went well this sprint?",
+    "response": "Async standups saved a lot of meeting time. Clear PR review process.",
+    "sentiment": "positive"
+  },
+  {
+    "id": "resp-002",
+    "sprint_id": "SPRINT-42",
+    "question": "What went well this sprint?",
+    "response": "CI catching regressions early was great. Three bugs caught before review.",
+    "sentiment": "positive"
+  },
+  {
+    "id": "resp-003",
+    "sprint_id": "SPRINT-42",
+    "question": "What went well this sprint?",
+    "response": "Team collaboration on the embedding pipeline was smooth.",
+    "sentiment": "positive"
+  },
+  {
+    "id": "resp-009",
+    "sprint_id": "SPRINT-42",
+    "question": "What went well this sprint?",
+    "response": "Rate-limiter race condition was caught and fixed quickly once diagnosed — great teamwork between bob and ci.",
+    "sentiment": "positive"
+  },
+  {
+    "id": "resp-010",
+    "sprint_id": "SPRINT-42",
+    "question": "What went well this sprint?",
+    "response": "Flaky test detection meant we didn't waste hours chasing intermittent failures manually.",
+    "sentiment": "positive"
+  },
+  {
+    "id": "resp-004",
+    "sprint_id": "SPRINT-42",
+    "question": "What could be improved?",
+    "response": "PRs are sitting approved but not merged for days — needs a merge SLA.",
+    "sentiment": "constructive"
+  },
+  {
+    "id": "resp-005",
+    "sprint_id": "SPRINT-42",
+    "question": "What could be improved?",
+    "response": "Sprint commitment was optimistic — didn't account for PTO properly.",
+    "sentiment": "constructive"
+  },
+  {
+    "id": "resp-006",
+    "sprint_id": "SPRINT-42",
+    "question": "What could be improved?",
+    "response": "Scope creep: 2 tickets were added Day 4 without removing anything.",
+    "sentiment": "constructive"
+  },
+  {
+    "id": "resp-011",
+    "sprint_id": "SPRINT-42",
+    "question": "What could be improved?",
+    "response": "New team member (frank) was blocked on repo access for two days — onboarding checklist would help.",
+    "sentiment": "constructive"
+  },
+  {
+    "id": "resp-012",
+    "sprint_id": "SPRINT-42",
+    "question": "What could be improved?",
+    "response": "A mid-sprint security ticket (SCRUM-112) forced us to re-prioritise without a clear process for urgent requests.",
+    "sentiment": "constructive"
+  },
+  {
+    "id": "resp-007",
+    "sprint_id": "SPRINT-42",
+    "question": "Any action items?",
+    "response": "Define a 48-hour merge SLA for approved PRs.",
+    "sentiment": "action"
+  },
+  {
+    "id": "resp-008",
+    "sprint_id": "SPRINT-42",
+    "question": "Any action items?",
+    "response": "Add PTO calendar integration to sprint capacity planning.",
+    "sentiment": "action"
+  },
+  {
+    "id": "resp-013",
+    "sprint_id": "SPRINT-42",
+    "question": "Any action items?",
+    "response": "Create an onboarding checklist that includes repo access requests before the sprint starts.",
+    "sentiment": "action"
+  },
+  {
+    "id": "resp-014",
+    "sprint_id": "SPRINT-42",
+    "question": "Any action items?",
+    "response": "Define an urgent/security ticket intake process so mid-sprint additions have a formal scope-swap step.",
+    "sentiment": "action"
+  }
+]

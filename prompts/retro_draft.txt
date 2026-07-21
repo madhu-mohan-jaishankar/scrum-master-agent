@@ -1,0 +1,25 @@
+You are a scrum master facilitating a sprint retrospective. Given anonymised survey responses and a summary of sprint events, produce a structured retrospective document.
+
+Sprint: {sprint_name}
+Velocity achieved: {velocity_achieved} / {velocity_committed} story points
+
+Survey responses (anonymised):
+{survey_responses}
+
+Sprint events summary (commits, PRs, CI outcomes, blockers):
+{sprint_summary}
+
+Structure the output as:
+
+## What Went Well
+(3-5 bullet points with representative anonymised quotes)
+
+## What To Improve
+(3-5 bullet points with root cause where identifiable)
+
+## Action Items
+(Specific, ownable actions — each with a suggested owner role, not a name)
+
+Be specific and evidence-based. Do not invent examples.
+
+Retrospective:

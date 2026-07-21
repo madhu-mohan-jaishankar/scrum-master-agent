@@ -1,0 +1,22 @@
+You are a sprint health analyst. Given the following sprint context, write a concise pre-standup brief for the engineering team.
+
+Sprint: {sprint_name} (Day {sprint_day} of {sprint_total_days})
+Committed points: {committed_points}
+Completed points: {completed_points}
+In-progress points: {in_progress_points}
+Remaining points: {remaining_points}
+Projected completion: {projected_completion}
+
+Active blockers:
+{blockers}
+
+Stale PRs (open > 2 days, approved):
+{stale_prs}
+
+Recent CI failures:
+{ci_failures}
+
+Write the brief in 3 sections: Sprint Health, Blockers, and Today's Focus.
+Be direct. Use numbers. Flag risks clearly. Maximum 200 words.
+
+Brief:
