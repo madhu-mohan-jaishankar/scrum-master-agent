@@ -60,6 +60,9 @@ The pipeline is also exposed as an **MCP server** ([`mcp_server.py`](mcp_server.
 | `run_mock_pipeline` | Run all 6 phases for a sprint — no credentials needed |
 | `run_phase` | Run a single named phase (`events`, `pre_standup`, `standup`, `retro`, `stale_prs`, `sprint_planning`) |
 | `get_sprint_snapshot` | Return the live sprint context as JSON |
+| `sync_github_project` | Sync a GitHub Projects board into the pipeline as `ticket.synced` events; falls back to `fixtures/github_projects.json` in mock mode |
+| `get_github_project` | Return raw GitHub Projects items for a sprint as JSON without running the pipeline |
+| `analyze_sprint_activity` | Cross-reference GitHub Projects board, event stream, and standup digests to produce a unified per-developer activity report |
 | `list_event_types` | Enumerate all supported `EventType` values |
 | `list_processors` | List the 8 processors in execution order |
 
@@ -91,6 +94,8 @@ wires the MCP tools to prompt templates so Bob acts as an active Scrum Master:
 | Standup digest (per dev) | `run_phase(events)` → `get_sprint_snapshot` → fill [`prompts/standup_digest.txt`](prompts/standup_digest.txt) |
 | Retrospective | `run_phase(retro)` → `get_sprint_snapshot` → fill [`prompts/retro_draft.txt`](prompts/retro_draft.txt) |
 | Release notes | `run_phase(events)` → `get_sprint_snapshot` → fill [`prompts/release_notes.txt`](prompts/release_notes.txt) |
+| GitHub Projects status | `get_github_project` (inspect) or `sync_github_project` (ingest into pipeline) |
+| Who is doing what | `analyze_sprint_activity` — cross-references board + events + standups per developer |
 | Full demo | `run_mock_pipeline` |
 
 ## Repository layout
@@ -98,7 +103,8 @@ wires the MCP tools to prompt templates so Bob acts as an active Scrum Master:
 ```
 mcp_server.py                ← MCP server (Bob tool entrypoint)
 scripts/run_mock.py          ← CLI demo entrypoint
-fixtures/                    ← sample sprint, events, standup digests, retro survey
+fixtures/                    ← sample sprint, events, standup digests, retro survey,
+                               github_projects (mock board data)
 prompts/                     ← LLM prompt templates (pre_standup_brief, standup_digest,
                                retro_draft, release_notes)
 

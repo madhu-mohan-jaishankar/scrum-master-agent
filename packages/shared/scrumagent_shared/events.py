@@ -17,6 +17,7 @@ from pydantic import BaseModel, Field
 
 class EventSource(StrEnum):
     GITHUB = "github"
+    GITHUB_PROJECTS = "github_projects"
     GITLAB = "gitlab"
     JIRA = "jira"
     LINEAR = "linear"
@@ -48,6 +49,7 @@ class EventType(StrEnum):
     TICKET_CREATED = "ticket.created"
     TICKET_UPDATED = "ticket.updated"
     TICKET_CLOSED = "ticket.closed"
+    TICKET_SYNCED = "ticket.synced"     # bulk sync from GitHub Projects
 
     # Slack async standup
     STANDUP_RESPONSE = "standup.response"

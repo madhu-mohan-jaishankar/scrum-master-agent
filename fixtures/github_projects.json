@@ -1,0 +1,74 @@
+[
+  {
+    "sprint_id": "SPRINT-42",
+    "project_number": 1,
+    "project_title": "Sprint 42 — Demo Sprint",
+    "org": "demo-org",
+    "items": [
+      {
+        "id": "PVTI_001",
+        "title": "feat: dark mode toggle",
+        "status": "In Review",
+        "assignees": ["alice"],
+        "story_points": 3,
+        "url": "https://github.com/demo-org/frontend-web/issues/55"
+      },
+      {
+        "id": "PVTI_002",
+        "title": "fix: API response caching bug",
+        "status": "In Progress",
+        "assignees": ["bob"],
+        "story_points": 2,
+        "url": "https://github.com/demo-org/api-service/issues/88"
+      },
+      {
+        "id": "PVTI_003",
+        "title": "chore: upgrade ML pipeline dependencies",
+        "status": "Done",
+        "assignees": ["carol", "dave"],
+        "story_points": 5,
+        "url": "https://github.com/demo-org/ml-pipeline/issues/42"
+      },
+      {
+        "id": "PVTI_004",
+        "title": "feat: release notes generator",
+        "status": "Done",
+        "assignees": ["carol"],
+        "story_points": 4,
+        "url": "https://github.com/demo-org/ml-pipeline/issues/43"
+      },
+      {
+        "id": "PVTI_005",
+        "title": "SCRUM-112: security key rotation",
+        "status": "In Progress",
+        "assignees": ["eve"],
+        "story_points": 8,
+        "url": "https://github.com/demo-org/api-service/issues/91"
+      },
+      {
+        "id": "PVTI_006",
+        "title": "fix: flaky unit-tests in api-service",
+        "status": "Blocked",
+        "assignees": ["bob"],
+        "story_points": 2,
+        "url": "https://github.com/demo-org/api-service/issues/92"
+      },
+      {
+        "id": "PVTI_007",
+        "title": "feat: burndown chart endpoint",
+        "status": "Todo",
+        "assignees": ["frank"],
+        "story_points": 3,
+        "url": "https://github.com/demo-org/api-service/issues/93"
+      },
+      {
+        "id": "PVTI_008",
+        "title": "docs: update API reference",
+        "status": "Todo",
+        "assignees": [],
+        "story_points": 1,
+        "url": "https://github.com/demo-org/api-service/issues/94"
+      }
+    ]
+  }
+]
