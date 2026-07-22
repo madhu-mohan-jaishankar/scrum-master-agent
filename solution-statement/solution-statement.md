@@ -1,4 +1,4 @@
-**Solution Statement**
+# Solution Statement — WatsonX ScrumMaster Agent
 
 ## The Problem and Process
 
